@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 const router = require('express').Router();
 
 // ℹ️ Handles password encryption
