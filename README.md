@@ -1,31 +1,20 @@
-
 # Roadtrip Planner Backend
-
-  
 
 ## Getting Started
 
-  
-
 Make sure you have node installed.
-
-  
 
 $ node -v
 
 v16.16.0
-  
 
 ## Server
-
-  
 
 To run the server in development, just type the command `yarn dev` or `npm run dev`.
 
 Don't forget to install node_modules with `yarn install` or `npm install`.
 
 ## Environment
-  
 
 - **PORT**
 
@@ -33,14 +22,14 @@ This variable is more needed to development environment but heroku also ask fo t
 
 I set it to `3003` but you are free to put it at the value you want.
 
-  
+Seb test
 
 - **SECRET**
 
 Random token to use as a secret for JWT. To generate one, run `node`, then: `crypto.randomBytes(64).toString('hex')`
 
 ## Development dependencies
-  
-  This part is more for the developers on this project.
-  You will find all the DevDependencies on the package.json.
-  I set a config eslint with the `AirBnb` config, make sur your VSCode or other IDE is config for this.
+
+This part is more for the developers on this project.
+You will find all the DevDependencies on the package.json.
+I set a config eslint with the `AirBnb` config, make sur your VSCode or other IDE is config for this.
