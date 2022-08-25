@@ -8,7 +8,7 @@ function filterCities(citiesToFilter) {
   const jsonFiltered = JSON.stringify(filteredCities);
   console.log(filteredCities);
   // create a local file and save the filtered cities to it
-  const file = fs.writeFile('./world-cities-filtered.json', jsonFiltered, 'utf-8', (err) => {
+  fs.writeFile('./world-cities-filtered.json', jsonFiltered, 'utf-8', (err) => {
     console.error(err);
   });
   // return filteredCities;
