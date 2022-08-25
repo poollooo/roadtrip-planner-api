@@ -44,3 +44,6 @@ Random token to use as a secret for JWT. To generate one, run `node`, then: `cry
   This part is more for the developers on this project.
   You will find all the DevDependencies on the package.json.
   I set a config eslint with the `AirBnb` config, make sur your VSCode or other IDE is config for this.
+
+
+  @@@@@hghjgbj
