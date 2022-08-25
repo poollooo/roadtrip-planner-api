@@ -14,7 +14,6 @@ Make sure you have node installed.
 $ node -v
 
 v16.16.0
-
   
 
 ## Server
@@ -32,7 +31,7 @@ Don't forget to install node_modules with `yarn install` or `npm install`.
 
 This variable is more needed to development environment but heroku also ask fo this variable.
 
-I set it to `3000` but you are free to put it at the value you want.
+I set it to `3003` but you are free to put it at the value you want.
 
   
 
