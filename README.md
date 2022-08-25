@@ -13,7 +13,7 @@ Make sure you have node installed.
 
 $ node -v
 
-v13.12.0
+v16.16.0
 
   
 
@@ -30,7 +30,7 @@ Don't forget to install node_modules with `yarn install` or `npm install`.
 
 - **PORT**
 
-This variable is more needed to development environment but heroku ask also fo this variable.
+This variable is more needed to development environment but heroku also ask fo this variable.
 
 I set it to `3000` but you are free to put it at the value you want.
 
