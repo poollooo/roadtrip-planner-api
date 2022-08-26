@@ -4,20 +4,20 @@ const { Schema, model , SchemaTypes} = require("mongoose");
 const userSchema = new Schema(
   {
     username: {
-      type: Schema.SchemaTypes.String,
+      type: Schema.Types.String,
       required: true,
       unique: true,
       min: 4,
       max: 15,
     },
     password: {
-      type: Schema.SchemaTypes.String,
+      type: Schema.Types.String,
       required: true,
       // min: 6,
       // max: 18,
     },
     email: {
-      type: Schema.SchemaTypes.String,
+      type: Schema.Types.String,
       required: true,
       unique: true,
       lowercase: true,
