@@ -13,8 +13,8 @@ const optionsRestaurant = {
     lang: 'en_US',
   },
   headers: {
-    'X-RapidAPI-Key': '493c0acd02mshe1541023f7b1b63p14ff8bjsn9faf9195fbd3',
-    'X-RapidAPI-Host': 'travel-advisor.p.rapidapi.com',
+    'X-RapidAPI-Key': process.env.XRapidAPIKey,
+    'X-RapidAPI-Host': process.env.XRapidAPIHost,
   },
 };
 
@@ -29,8 +29,8 @@ const optionsActivities = {
     sort: 'recommended',
   },
   headers: {
-    'X-RapidAPI-Key': '493c0acd02mshe1541023f7b1b63p14ff8bjsn9faf9195fbd3',
-    'X-RapidAPI-Host': 'travel-advisor.p.rapidapi.com',
+    'X-RapidAPI-Key': process.env.XRapidAPIKey,
+    'X-RapidAPI-Host': process.env.XRapidAPIHost,
   },
 };
 
@@ -40,12 +40,13 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
   try {
     optionsRestaurant.params.location_id = req.locationSearchedId;
     optionsActivities.params.location_id = req.locationSearchedId;
+    let restaurantList;
+    let attractionList;
 
     await axios.request(optionsRestaurant)
       .then((response) => {
         console.log(response.data.data);
-        const restaurantList = response.data.data;
-        res.json(restaurantList);
+        restaurantList = response.data.data;
       }).catch((error) => {
         console.error(error);
       });
@@ -53,8 +54,7 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
     await axios.request(optionsActivities)
       .then((response) => {
         console.log(response.data.data);
-        const attractionList = response.data.data;
-        res.json(attractionList);
+        attractionList = response.data.data;
       }).catch((error) => {
         console.error(error);
       });
