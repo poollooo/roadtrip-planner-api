@@ -4,10 +4,23 @@ const { Schema, model } = require("mongoose");
 const userSchema = new Schema(
   {
     username: {
-      type: String,
-      // unique: true -> Ideally, should be unique, but its up to you
+      type: Schema.Types.String,
+      required: true,
+      unique: true,
+      min: 4,
+      max: 15,
     },
-    password: String,
+    password: {
+      type: Schema.Types.String,
+      required: true,
+    },
+    email: {
+      type: Schema.Types.String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gi,
+    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
