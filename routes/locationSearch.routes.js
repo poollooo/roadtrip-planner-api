@@ -1,39 +1,14 @@
-const axios = require('axios');
 const router = require('express').Router();
-
-const options = {
-  method: 'GET',
-  url: 'https://travel-advisor.p.rapidpi.com/locations/search',
-  params: {
-    query: '',
-    limit: '30',
-    offset: '0',
-    units: 'km',
-    location_id: '1',
-    currency: 'USD',
-    sort: 'relevance',
-    lang: 'en_US',
-  },
-  headers: {
-    'X-RapidAPI-Key': process.env.XRapidAPIKey,
-    'X-RapidAPI-Host': process.env.XRapidAPIHost,
-  },
-};
+const { getLocationId } = require('../middleware/getLocationId');
 
 // the route is {baseUrl}/api/search/:citySearched
 
-router.get('/:citySearched', async (req, res, next) => {
+router.get('/:citySearched', getLocationId, (req, res, next) => {
   try {
-    const { citySearched } = req.params;
-    options.params.query = citySearched;
-
-    axios.request(options)
-      .then(({ data }) => {
-        const locationSearchedId = data.data[0].result_object.location_id;
-        return res.status(200).json(locationSearchedId);
-      }).catch((error) => {
-        next(error);
-      });
+    // console.log(req.locationSearchedId);
+    // console.log(req);
+    // console.log(res);
+    res.json({ local: req.locationSearchedId });
   } catch (error) {
     next(error);
   }
