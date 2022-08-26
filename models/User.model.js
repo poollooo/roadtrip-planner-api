@@ -13,8 +13,6 @@ const userSchema = new Schema(
     password: {
       type: Schema.Types.String,
       required: true,
-      // min: 6,
-      // max: 18,
     },
     email: {
       type: Schema.Types.String,
