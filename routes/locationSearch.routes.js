@@ -3,7 +3,7 @@ const router = require('express').Router();
 
 const options = {
   method: 'GET',
-  url: 'https://travel-advisor.p.rapidapi.com/locations/search',
+  url: 'https://travel-advisor.p.rapidpi.com/locations/search',
   params: {
     query: '',
     limit: '30',
@@ -30,10 +30,9 @@ router.get('/:citySearched', async (req, res, next) => {
     axios.request(options)
       .then(({ data }) => {
         const locationSearchedId = data.data[0].result_object.location_id;
-        console.log('locationSearchedId should be', locationSearchedId);
         return res.status(200).json(locationSearchedId);
       }).catch((error) => {
-        console.log(error);
+        next(error);
       });
   } catch (error) {
     next(error);
