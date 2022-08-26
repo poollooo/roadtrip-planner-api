@@ -5,7 +5,7 @@ const activitiesSchema = new Schema({
     type: Schema.Types.String,
     enum: ["ATTRACTION"],
   },
-  location_id: {
+  locationId: {
     type: Schema.Types.String,
     required: true,
   },
@@ -25,6 +25,10 @@ const activitiesSchema = new Schema({
   }
 });
 
+
+const Activities = model("Activities", activitiesSchema);
+
+module.exports = Activities;
 
 
 
