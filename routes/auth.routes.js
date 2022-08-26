@@ -14,11 +14,6 @@ const { TOKEN_SECRET } = process.env;
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
 
-// Require necessary (isLoggedOut and isLoggedIn) middleware
-// in order to control access to specific routes
-const isLoggedOut = require("../middleware/isLoggedOut");
-const isLoggedIn = require("../middleware/isLoggedIn");
-
 router.get("/loggedin", (req, res) => {
   res.json(req.user);
 });
@@ -113,13 +108,6 @@ router.post("/login", (req, res, next) => {
       .status(400)
       .json({ errorMessage: "Please provide your password." });
   }
-  // Here we use the same logic as above
-  // - either length based parameters or we check the strength of a password
-  // if (password.length < 8) {
-  //   return res.status(400).json({
-  //     errorMessage: "Your password needs to be at least 8 characters long.",
-  //   });
-  // }
 
   // Search the database for a user with the username submitted in the form
   User.findOne({ username })
