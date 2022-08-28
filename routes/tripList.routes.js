@@ -9,12 +9,14 @@ router.post("/", async (req, res, next) => {
     const { userId, startDate, endDate } = req.body;
     const { locationId } = req.locationSearchedId;
 
-    const userListCreated = Trip.create({
+    const tripListCreated = Trip.create({
       userId,
       locationId,
       startDate,
       endDate,
     });
+
+    const tripId = tripListCreated._id;
 
     const activitiesCreated = Activities.create({
       categories,
@@ -25,7 +27,7 @@ router.post("/", async (req, res, next) => {
       tripId,
     });
 
-    res.status(200).json(userListCreated);
+    res.status(200).json(tripListCreated);
   } catch (error) {
     res.status(400).json("Bad request");
     next(error);
