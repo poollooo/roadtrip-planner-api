@@ -27,7 +27,7 @@ router.post("/", async (req, res, next) => {
       tripId,
     });
 
-    res.status(200).json(tripListCreated);
+    res.status(200).json({ tripListCreated, activitiesCreated });
   } catch (error) {
     res.status(400).json("Bad request");
     next(error);
