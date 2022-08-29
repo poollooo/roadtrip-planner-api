@@ -65,7 +65,6 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
           address: restaurant.address,
           hours: restaurant.hours,
         }));
-        // console.log(restaurantList);
       }).catch((error) => {
         console.error(error);
       });
@@ -91,7 +90,6 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
           address: activity.address,
           hours: activity.hours,
         }));
-        // console.log(restaurantList);
       }).catch((error) => {
         console.error(error);
       });
