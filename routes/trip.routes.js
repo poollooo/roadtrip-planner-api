@@ -110,7 +110,7 @@ const SelectedActivities = require("../models/SelectedActivities.model");
 //     }
 // }
 
-////todo Resturant List :
+////todo Restaurant List :
 //     location_id: restaurant.location_id,
 //     name: restaurant.name,
 //     description: restaurant.description,
@@ -148,12 +148,13 @@ const SelectedActivities = require("../models/SelectedActivities.model");
 
 router.post("/", async (req, res, next) => {
   try {
-    const { restaurantList, activitiesList, User, startDate, endDate } =
+    const { restaurantList, activitiesList, startDate, endDate } =
       req.body;
+    const user = req.user; 
     const { locationId } = req.locationSearchedId;
 
     const tripCreated = await Trip.create({
-      userId: User._id,
+      userId: user._id,
       locationId: locationId,
       startDate,
       endDate,
@@ -162,7 +163,7 @@ router.post("/", async (req, res, next) => {
     const tripId = tripCreated._id;
 
     restaurantList.forEach((restaurant) => {
-      const SelectedRestaurantCreated =await SelectedActivities.create({
+    await SelectedActivities.create({
         activitiesId: restaurant._id,
         startDate,
         endDate,
@@ -171,7 +172,7 @@ router.post("/", async (req, res, next) => {
     })
 
     activitiesList.forEach((activity) => {
-      const SelectedActivityCreated =await SelectedActivities.create({
+      await SelectedActivities.create({
         activitiesId: restaurant._id,
         startDate,
         endDate,
@@ -188,7 +189,8 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.get("/", async (req, res, next) => {
+//user id 
+router.get("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const trip = await Trip.findById(id);
@@ -199,7 +201,9 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.patch("/", async (req, res, next) => {
+
+// trip id 
+router.patch("/:id", async (req, res, next) => {
   try {
     const { tripId } = req.params;
    await SelectedActivities.findOneAndUpdate({ tripId: tripId }, req.body, { new: true });
@@ -209,7 +213,8 @@ router.patch("/", async (req, res, next) => {
   }
 });
 
-router.delete("/", async (req, res, next) => {
+//trip id 
+router.delete("/:id", async (req, res, next) => {
   try {
     const { tripId } = req.params;
     await Trip.findByIdAndDelete(tripId);
