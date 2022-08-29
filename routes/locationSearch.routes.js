@@ -26,6 +26,7 @@ const optionsActivities = {
     currency: 'USD',
     lang: 'en_US',
     lunit: 'km',
+    limit: '5',
     sort: 'recommended',
   },
   headers: {
@@ -41,24 +42,59 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
     optionsRestaurant.params.location_id = req.locationSearchedId;
     optionsActivities.params.location_id = req.locationSearchedId;
     let restaurantList;
-    let attractionList;
+    let activityList;
 
     await axios.request(optionsRestaurant)
       .then((response) => {
-        console.log(response.data.data);
         restaurantList = response.data.data;
+        restaurantList = restaurantList.map((restaurant) => ({
+          location_id: restaurant.location_id,
+          name: restaurant.name,
+          description: restaurant.description,
+          numberOfReviews: restaurant.num_reviews,
+          photo: restaurant.photo,
+          rawRating: restaurant.raw_ranking,
+          ranking: restaurant.ranking,
+          priceLevel: restaurant.price_level,
+          priceRange: restaurant.price,
+          tripAdvisorUrl: restaurant.web_url,
+          category: restaurant.category,
+          phone: restaurant.phone,
+          website: restaurant.website,
+          email: restaurant.email,
+          address: restaurant.address,
+          hours: restaurant.hours,
+        }));
       }).catch((error) => {
         console.error(error);
       });
 
     await axios.request(optionsActivities)
       .then((response) => {
-        console.log(response.data.data);
-        attractionList = response.data.data;
+        activityList = response.data.data;
+        activityList = activityList.map((activity) => ({
+          location_id: activity.location_id,
+          name: activity.name,
+          description: activity.description,
+          numberOfReviews: activity.num_reviews,
+          photo: activity.photo,
+          rawRating: activity.raw_ranking,
+          ranking: activity.ranking,
+          priceLevel: activity.price_level,
+          priceRange: activity.price,
+          tripAdvisorUrl: activity.web_url,
+          category: activity.category,
+          phone: activity.phone,
+          website: activity.website,
+          email: activity.email,
+          address: activity.address,
+          hours: activity.hours,
+        }));
       }).catch((error) => {
         console.error(error);
       });
-    res.status(200).json({ restaurantList, attractionList });
+    console.log(restaurantList, activityList);
+    res.status(200).json({ restaurantList, activityList });
   } catch (error) {
     next(error);
   }
