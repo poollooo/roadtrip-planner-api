@@ -1,8 +1,7 @@
 const router = require("express").Router();
-const mongoose = require("mongoose");
 const getLocationId = require("../middleware/getLocationId");
 const Trip = require("../models/Trip.model");
-const Activities = require("../models/Activities");
+const SelectedActivities = require("../models/SelectedActivities.model");
 
 // {
 //     "location_id": "13511379",
@@ -111,31 +110,78 @@ const Activities = require("../models/Activities");
 //     }
 // }
 
+////todo Resturant List :
+//     location_id: restaurant.location_id,
+//     name: restaurant.name,
+//     description: restaurant.description,
+//     numberOfReviews: restaurant.num_reviews,
+//     photo: restaurant.photo,
+//     rawRating: restaurant.raw_ranking,
+//     ranking: restaurant.ranking,
+//     priceLevel: restaurant.price_level,
+//     priceRange: restaurant.price,
+//     tripAdvisorUrl: restaurant.web_url,
+//     category: restaurant.category,
+//     phone: restaurant.phone,
+//     website: restaurant.website,
+//     email: restaurant.email,
+//     address: restaurant.address,
+//     hours: restaurant.hours,
 
+//     todo activityList
+//       location_id: activity.location_id,
+//       name: activity.name,
+//       description: activity.description,
+//       numberOfReviews: activity.num_reviews,
+//       photo: activity.photo,
+//       rawRating: activity.raw_ranking,
+//       ranking: activity.ranking,
+//       priceLevel: activity.price_level,
+//       priceRange: activity.price,
+//       tripAdvisorUrl: activity.web_url,
+//       category: activity.category,
+//       phone: activity.phone,
+//       website: activity.website,
+//       email: activity.email,
+//       address: activity.address,
+//       hours: activity.hours,
 
 router.post("/", async (req, res, next) => {
   try {
-    const { userId, startDate, endDate } = req.body;
+    const { restaurantList, activitiesList, User, startDate, endDate } =
+      req.body;
     const { locationId } = req.locationSearchedId;
 
-    const tripCreated = Trip.create({
-      userId,
-      locationId,
+    const tripCreated = await Trip.create({
+      userId: User._id,
+      locationId: locationId,
       startDate,
       endDate,
     });
 
     const tripId = tripCreated._id;
 
-    const activitiesListCreated = Activities.create({
-      categories,
-      locationId,
-      startDate,
-      endDate,
-      note,
-      tripId,
-    });
-    res.status(200).json({ tripCreated, activitiesListCreated });
+    restaurantList.forEach((restaurant) => {
+      const SelectedRestaurantCreated =await SelectedActivities.create({
+        activitiesId: restaurant._id,
+        startDate,
+        endDate,
+        tripId: tripId,
+      })
+    })
+
+    activitiesList.forEach((activity) => {
+      const SelectedActivityCreated =await SelectedActivities.create({
+        activitiesId: restaurant._id,
+        startDate,
+        endDate,
+        tripId: tripId,
+      });
+    })
+
+    const allSelectedActivities =await SelectedActivities.find({tripId:tripId})
+
+    res.status(200).json({ tripCreated, allSelectedActivities });
   } catch (error) {
     res.status(400).json("Bad request");
     next(error);
@@ -146,7 +192,7 @@ router.get("/", async (req, res, next) => {
   try {
     const { id } = req.params;
     const trip = await Trip.findById(id);
-    const activities = await Activities.findById(id);
+    const SelectedActivities = await SelectedActivities.find(id);
     res.status(200).json({ trip, activities });
   } catch (error) {
     next(error);
@@ -156,8 +202,8 @@ router.get("/", async (req, res, next) => {
 router.patch("/", async (req, res, next) => {
   try {
     const { tripId } = req.params;
-    Activities.findOneAndUpdate({ tripId: tripId }, req.body, { new: true });
-    res.status(200).json()
+   await SelectedActivities.findOneAndUpdate({ tripId: tripId }, req.body, { new: true });
+    res.status(200).json();
   } catch (error) {
     next(error);
   }
@@ -167,7 +213,7 @@ router.delete("/", async (req, res, next) => {
   try {
     const { tripId } = req.params;
     await Trip.findByIdAndDelete(tripId);
-    await Activities.findOneAndDelete({ tripId: tripId });
+    await SelectedActivities.findOneAndDelete({ tripId: tripId });
   } catch (error) {
     next(error);
   }
