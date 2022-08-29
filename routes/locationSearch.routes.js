@@ -57,7 +57,7 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
     let activityList;
     const newActivityList = [];
 
-    // await ActivitiesTemp.deleteMany();
+    // await Activities.deleteMany();
 
     await axios.request(optionsRestaurant)
       .then(async (response) => {
@@ -82,11 +82,11 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
             address: restaurant.address,
             hours: getHours(restaurant.hours?.week_ranges),
           };
-          const restaurantToCheck = await ActivitiesTemp.findOne({ locationId: newRestaurant.locationId });
+          const restaurantToCheck = await Activities.findOne({ locationId: newRestaurant.locationId });
           if (!restaurantToCheck) {
             if (newRestaurant.name) {
               newActivityList.push(newRestaurant);
-              return ActivitiesTemp.create(newRestaurant);
+              return Activities.create(newRestaurant);
             }
           }
         });
@@ -118,11 +118,11 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
             address: activity.address,
             hours: getHours(activity.hours?.week_ranges),
           };
-          const activityToCheck = await ActivitiesTemp.findOne({ locationId: newActivity.locationId });
+          const activityToCheck = await Activities.findOne({ locationId: newActivity.locationId });
           if (!activityToCheck) {
             if (newActivity.name) {
               newActivityList.push(newActivity);
-              return ActivitiesTemp.create(newActivity);
+              return Activities.create(newActivity);
             }
           }
         });
