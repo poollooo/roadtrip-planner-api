@@ -26,6 +26,7 @@ const optionsActivities = {
     currency: 'USD',
     lang: 'en_US',
     lunit: 'km',
+    limit: '5',
     sort: 'recommended',
   },
   headers: {
@@ -41,12 +42,11 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
     optionsRestaurant.params.location_id = req.locationSearchedId;
     optionsActivities.params.location_id = req.locationSearchedId;
     let restaurantList;
-    // let attractionList;
+    let activityList;
 
     await axios.request(optionsRestaurant)
       .then((response) => {
         restaurantList = response.data.data;
-        // console.log(restaurantList);
         restaurantList = restaurantList.map((restaurant) => ({
           location_id: restaurant.location_id,
           name: restaurant.name,
@@ -65,20 +65,38 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
           address: restaurant.address,
           hours: restaurant.hours,
         }));
-        console.log(restaurantList);
+        // console.log(restaurantList);
       }).catch((error) => {
         console.error(error);
       });
 
-    // await axios.request(optionsActivities)
-    //   .then((response) => {
-    //     console.log(response.data.data);
-    //     attractionList = response.data.data;
-    //   }).catch((error) => {
-    //     console.error(error);
-    //   });
-    res.status(200).json({ restaurantList });
-    // res.status(200).json({ restaurantList, attractionList });
+    await axios.request(optionsActivities)
+      .then((response) => {
+        activityList = response.data.data;
+        activityList = activityList.map((attr) => ({
+          location_id: attr.location_id,
+          name: attr.name,
+          description: attr.description,
+          numberOfReviews: attr.num_reviews,
+          photo: attr.photo,
+          rawRating: attr.raw_ranking,
+          ranking: attr.ranking,
+          priceLevel: attr.price_level,
+          priceRange: attr.price,
+          tripAdvisorUrl: attr.web_url,
+          category: attr.category,
+          phone: attr.phone,
+          website: attr.website,
+          email: attr.email,
+          address: attr.address,
+          hours: attr.hours,
+        }));
+        // console.log(restaurantList);
+      }).catch((error) => {
+        console.error(error);
+      });
+    console.log(restaurantList, activityList);
+    res.status(200).json({ restaurantList, activityList });
   } catch (error) {
     next(error);
   }
