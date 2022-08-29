@@ -1,0 +1,449 @@
+{
+    "location_id": "13511379",
+    "name": "Restaurant Bougainville",
+    "description": "",
+    "numberOfReviews": "245",
+    "photo": {
+        "images": {
+            "small": {
+                "width": "150",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-l/18/58/3a/b9/dam-square.jpg",
+                "height": "150"
+            },
+            "thumbnail": {
+                "width": "50",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-t/18/58/3a/b9/dam-square.jpg",
+                "height": "50"
+            },
+            "original": {
+                "width": "1280",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-o/18/58/3a/b9/dam-square.jpg",
+                "height": "853"
+            },
+            "large": {
+                "width": "1024",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-w/18/58/3a/b9/dam-square.jpg",
+                "height": "682"
+            },
+            "medium": {
+                "width": "550",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-s/18/58/3a/b9/dam-square.jpg",
+                "height": "367"
+            }
+        },
+        "is_blessed": true,
+        "uploaded_date": "2019-07-16T15:45:59-0400",
+        "caption": "Dam Square",
+        "id": "408435385",
+        "helpful_votes": "2",
+        "published_date": "2019-07-16T15:45:59-0400",
+        "user": {
+            "user_id": null,
+            "member_id": "0",
+            "type": "user"
+        }
+    },
+    "rawRating": "4.835379600524902",
+    "ranking": "#1 of 4,107 Results",
+    "priceLevel": "$$$$",
+    "priceRange": "$99 - $119",
+    "tripAdvisorUrl": "https://www.tripadvisor.com/Restaurant_Review-g188590-d13511379-Reviews-Restaurant_Bougainville-Amsterdam_North_Holland_Province.html",
+    "category": {
+        "key": "restaurant",
+        "name": "Restaurant"
+    },
+    "phone": "+31 20 218 2182",
+    "website": "http://www.restaurantbougainville.com/",
+    "email": "reservations@restaurantbougainville.com",
+    "address": "Dam 27 In Hotel TwentySeven, 1012 JS Amsterdam The Netherlands",
+    "hours": {
+        "week_ranges": [
+            [
+                {
+                    "open_time": 1110,
+                    "close_time": 1320
+                }
+            ],
+            [
+                {
+                    "open_time": 1110,
+                    "close_time": 1320
+                }
+            ],
+            [
+                {
+                    "open_time": 1110,
+                    "close_time": 1320
+                }
+            ],
+            [
+                {
+                    "open_time": 1110,
+                    "close_time": 1320
+                }
+            ],
+            [
+                {
+                    "open_time": 1110,
+                    "close_time": 1320
+                }
+            ],
+            [
+                {
+                    "open_time": 1110,
+                    "close_time": 1320
+                }
+            ],
+            [
+                {
+                    "open_time": 1110,
+                    "close_time": 1320
+                }
+            ]
+        ],
+        "timezone": "Europe/Amsterdam"
+    }
+},
+{
+    "location_id": "2006595",
+    "name": "Midtown Grill",
+    "description": "Expect a fine dining experience at Midtown Grill. Our steakhouse restaurant in Amsterdam features high-quality cuts of meat from around the world. Don't miss our weekend brunch, every Saturday and Sunday from 12:30pm to 5:00pm.",
+    "numberOfReviews": "2542",
+    "photo": {
+        "images": {
+            "small": {
+                "width": "150",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-l/1b/30/0f/9d/sit-in-the-open-kitchen.jpg",
+                "height": "150"
+            },
+            "thumbnail": {
+                "width": "50",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-t/1b/30/0f/9d/sit-in-the-open-kitchen.jpg",
+                "height": "50"
+            },
+            "original": {
+                "width": "1280",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-m/1280/1b/30/0f/9d/sit-in-the-open-kitchen.jpg",
+                "height": "538"
+            },
+            "large": {
+                "width": "1024",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-w/1b/30/0f/9d/sit-in-the-open-kitchen.jpg",
+                "height": "431"
+            },
+            "medium": {
+                "width": "550",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-s/1b/30/0f/9d/sit-in-the-open-kitchen.jpg",
+                "height": "231"
+            }
+        },
+        "is_blessed": true,
+        "uploaded_date": "2020-03-20T10:12:16-0400",
+        "caption": "Sit in the open kitchen and enjoy a talk with our chefs while they are cooking your steak to perfection. ",
+        "id": "456134557",
+        "helpful_votes": "7",
+        "published_date": "2020-03-20T10:12:16-0400",
+        "user": {
+            "user_id": null,
+            "member_id": "0",
+            "type": "user"
+        }
+    },
+    "rawRating": "4.812793254852295",
+    "ranking": "#2 of 4,107 Results",
+    "priceLevel": "$$$$",
+    "priceRange": "$8 - $25",
+    "tripAdvisorUrl": "https://www.tripadvisor.com/Restaurant_Review-g188590-d2006595-Reviews-Midtown_Grill-Amsterdam_North_Holland_Province.html",
+    "category": {
+        "key": "restaurant",
+        "name": "Restaurant"
+    },
+    "phone": "+31 20 607 5555",
+    "website": "https://www.midtowngrill.nl/?y_source=1_NDgxMDIzNzQtNzY5LWxvY2F0aW9uLndlYnNpdGU%3D",
+    "email": "info@midtowngrill.nl",
+    "address": "Stadhouderskade 12, 1054 ES Amsterdam The Netherlands",
+    "hours": {
+        "week_ranges": [
+            [
+                {
+                    "open_time": 390,
+                    "close_time": 660
+                },
+                {
+                    "open_time": 750,
+                    "close_time": 1350
+                }
+            ],
+            [
+                {
+                    "open_time": 390,
+                    "close_time": 660
+                },
+                {
+                    "open_time": 1020,
+                    "close_time": 1350
+                }
+            ],
+            [
+                {
+                    "open_time": 390,
+                    "close_time": 660
+                },
+                {
+                    "open_time": 1020,
+                    "close_time": 1350
+                }
+            ],
+            [
+                {
+                    "open_time": 390,
+                    "close_time": 660
+                },
+                {
+                    "open_time": 1020,
+                    "close_time": 1350
+                }
+            ],
+            [
+                {
+                    "open_time": 390,
+                    "close_time": 660
+                },
+                {
+                    "open_time": 1020,
+                    "close_time": 1350
+                }
+            ],
+            [
+                {
+                    "open_time": 390,
+                    "close_time": 660
+                },
+                {
+                    "open_time": 1020,
+                    "close_time": 1350
+                }
+            ],
+            [
+                {
+                    "open_time": 390,
+                    "close_time": 660
+                },
+                {
+                    "open_time": 750,
+                    "close_time": 1350
+                }
+            ]
+        ],
+        "timezone": "Europe/Amsterdam"
+    }
+},
+{
+    "location_id": "6751345",
+    "name": "Ku Kitchen & Bar",
+    "description": "Ku Kitchen & Bar opened in 2014 and has been a buzzing bar and restaurant ever since. Located on one of the prettiest streets in Amsterdam, the Utrechtsestraat. We have weekly changing specials and classics. Sushi, wagyu burgers and lots of vegetarian options.",
+    "numberOfReviews": "512",
+    "photo": {
+        "images": {
+            "small": {
+                "width": "150",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-l/11/79/cb/59/japanese-whiskey-s.jpg",
+                "height": "150"
+            },
+            "thumbnail": {
+                "width": "50",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-t/11/79/cb/59/japanese-whiskey-s.jpg",
+                "height": "50"
+            },
+            "original": {
+                "width": "1200",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-o/11/79/cb/59/japanese-whiskey-s.jpg",
+                "height": "800"
+            },
+            "large": {
+                "width": "1024",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-w/11/79/cb/59/japanese-whiskey-s.jpg",
+                "height": "682"
+            },
+            "medium": {
+                "width": "550",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-s/11/79/cb/59/japanese-whiskey-s.jpg",
+                "height": "366"
+            }
+        },
+        "is_blessed": true,
+        "uploaded_date": "2017-12-09T06:09:14-0500",
+        "caption": "Japanese Whiskey's",
+        "id": "293194585",
+        "helpful_votes": "2",
+        "published_date": "2017-12-09T06:09:14-0500",
+        "user": {
+            "user_id": null,
+            "member_id": "0",
+            "type": "user"
+        }
+    },
+    "rawRating": "4.811453342437744",
+    "ranking": "#3 of 4,107 Results",
+    "priceLevel": "$$ - $$$",
+    "tripAdvisorUrl": "https://www.tripadvisor.com/Restaurant_Review-g188590-d6751345-Reviews-Ku_Kitchen_Bar-Amsterdam_North_Holland_Province.html",
+    "category": {
+        "key": "restaurant",
+        "name": "Restaurant"
+    },
+    "phone": "+31 20 422 9424",
+    "website": "https://www.kukitchen.nl",
+    "email": "info@kukitchen.nl",
+    "address": "Utrechtsestraat 114, 1017 VT Amsterdam The Netherlands",
+    "hours": {
+        "week_ranges": [
+            [
+                {
+                    "open_time": 1020,
+                    "close_time": 1500
+                }
+            ],
+            [
+                {
+                    "open_time": 1020,
+                    "close_time": 1500
+                }
+            ],
+            [
+                {
+                    "open_time": 1020,
+                    "close_time": 1500
+                }
+            ],
+            [
+                {
+                    "open_time": 1020,
+                    "close_time": 1500
+                }
+            ],
+            [
+                {
+                    "open_time": 1020,
+                    "close_time": 1500
+                }
+            ],
+            [
+                {
+                    "open_time": 1020,
+                    "close_time": 1620
+                }
+            ],
+            [
+                {
+                    "open_time": 1020,
+                    "close_time": 1620
+                }
+            ]
+        ],
+        "timezone": "Europe/Amsterdam"
+    }
+},
+{
+    "location_id": "693419",
+    "name": "de Silveren Spiegel",
+    "description": "Elegance, tradition and hospitality are the core traits of one of Amsterdam’s finest restaurants, de Silveren Spiegel (the Silver Mirror). The restaurant dates from the Dutch Golden Age, the 17th century, so you can experience the ambiance of this time period. Breathtaking surroundings and a lovely diner. Private rooms for special occasions, parties or business meetings available.",
+    "numberOfReviews": "1547",
+    "photo": {
+        "images": {
+            "small": {
+                "width": "150",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-l/24/bf/e5/77/dessert.jpg",
+                "height": "150"
+            },
+            "thumbnail": {
+                "width": "50",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-t/24/bf/e5/77/dessert.jpg",
+                "height": "50"
+            },
+            "original": {
+                "width": "1280",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-m/1280/24/bf/e5/77/dessert.jpg",
+                "height": "960"
+            },
+            "large": {
+                "width": "550",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-s/24/bf/e5/77/dessert.jpg",
+                "height": "413"
+            },
+            "medium": {
+                "width": "250",
+                "url": "https://media-cdn.tripadvisor.com/media/photo-f/24/bf/e5/77/dessert.jpg",
+                "height": "188"
+            }
+        },
+        "is_blessed": true,
+        "uploaded_date": "2022-07-16T09:47:16-0400",
+        "caption": "dessert",
+        "id": "616555895",
+        "helpful_votes": "0",
+        "published_date": "2022-07-16T09:47:16-0400",
+        "user": {
+            "user_id": null,
+            "member_id": "0",
+            "type": "user"
+        }
+    },
+    "rawRating": "4.794895648956299",
+    "ranking": "#4 of 4,107 Results",
+    "priceLevel": "$$$$",
+    "priceRange": "$60 - $199",
+    "tripAdvisorUrl": "https://www.tripadvisor.com/Restaurant_Review-g188590-d693419-Reviews-De_Silveren_Spiegel-Amsterdam_North_Holland_Province.html",
+    "category": {
+        "key": "restaurant",
+        "name": "Restaurant"
+    },
+    "phone": "+31 20 624 6589",
+    "website": "http://www.desilverenspiegel.com",
+    "email": "info@desilverenspiegel.com",
+    "address": "Kattengat 4-6, 1012 SZ Amsterdam The Netherlands",
+    "hours": {
+        "week_ranges": [
+            [],
+            [],
+            [
+                {
+                    "open_time": 1080,
+                    "close_time": 1380
+                }
+            ],
+            [
+                {
+                    "open_time": 1080,
+                    "close_time": 1380
+                }
+            ],
+            [
+                {
+                    "open_time": 1080,
+                    "close_time": 1380
+                }
+            ],
+            [
+                {
+                    "open_time": 750,
+                    "close_time": 840
+                },
+                {
+                    "open_time": 1110,
+                    "close_time": 1380
+                }
+            ],
+            [
+                {
+                    "open_time": 750,
+                    "close_time": 840
+                },
+                {
+                    "open_time": 1110,
+                    "close_time": 1380
+                }
+            ]
+        ],
+        "timezone": "Europe/Amsterdam"
+    }
+},
