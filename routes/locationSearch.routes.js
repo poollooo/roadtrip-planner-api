@@ -55,13 +55,15 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
     optionsActivities.params.location_id = req.locationSearchedId;
     let restaurantList;
     let activityList;
-    await ActivitiesTemp.deleteMany();
+    const newActivityList = [];
+
+    // await ActivitiesTemp.deleteMany();
 
     await axios.request(optionsRestaurant)
-      .then((response) => {
+      .then(async (response) => {
         restaurantList = response.data.data;
 
-        restaurantList = restaurantList.map((restaurant) => {
+        restaurantList = restaurantList.map(async (restaurant) => {
           const newRestaurant = {
             locationId: restaurant.location_id,
             name: restaurant.name,
@@ -80,25 +82,24 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
             address: restaurant.address,
             hours: getHours(restaurant.hours?.week_ranges),
           };
-          //   const restaurantToCheck = ActivitiesTemp.find({ locationId: newRestaurant.locationId });
-          //   console.log(restaurantToCheck);
-          //   if (!restaurantToCheck) {
-          if (newRestaurant.name) {
-            console.log('inside !restauToCheck');
-            return ActivitiesTemp.create(newRestaurant);
+          const restaurantToCheck = await ActivitiesTemp.findOne({ locationId: newRestaurant.locationId });
+          if (!restaurantToCheck) {
+            if (newRestaurant.name) {
+              newActivityList.push(newRestaurant);
+              return ActivitiesTemp.create(newRestaurant);
+            }
           }
-        //   }
         });
-        Promise.all(restaurantList);
+        await Promise.all(restaurantList);
       })
       .catch((error) => {
         console.error(error);
       });
 
     await axios.request(optionsActivities)
-      .then((response) => {
+      .then(async (response) => {
         activityList = response.data.data;
-        activityList = activityList.map((activity) => {
+        activityList = activityList.map(async (activity) => {
           const newActivity = {
             locationId: activity.location_id,
             name: activity.name,
@@ -117,22 +118,20 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
             address: activity.address,
             hours: getHours(activity.hours?.week_ranges),
           };
-          //   const activityToCheck = ActivitiesTemp.findOne({ locationId: newActivity.locationId });
-          //   console.log(activityToCheck.locationId);
-          //   if (!activityToCheck) {
-          if (newActivity.name) {
-            return ActivitiesTemp.create(newActivity);
+          const activityToCheck = await ActivitiesTemp.findOne({ locationId: newActivity.locationId });
+          if (!activityToCheck) {
+            if (newActivity.name) {
+              newActivityList.push(newActivity);
+              return ActivitiesTemp.create(newActivity);
+            }
           }
-        //   }
         });
-        Promise.all(activityList);
+        await Promise.all(activityList);
       })
       .catch((error) => {
         console.error(error);
       });
-    // console.log(restaurantList, activityList);
-    // ActivitiesTemp.create(restaurantList);
-    res.status(200).json({ restaurantList, activityList });
+    res.status(200).json({ newActivityList });
   } catch (error) {
     next(error);
   }
