@@ -4,6 +4,7 @@ const activitiesSchema = new Schema(
   {
     locationId: {
       type: Schema.Types.String,
+      unique: true,
     },
     name: {
       type: Schema.Types.String,
