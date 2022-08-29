@@ -55,6 +55,6 @@ const activitiesSchema = new Schema(
   { timestamps: true },
 );
 
-const ActivitiesTemp = model('ActivitiesTemp', activitiesSchema);
+const Activities = model('Activities', activitiesSchema);
 
-module.exports = ActivitiesTemp;
+module.exports = Activities;

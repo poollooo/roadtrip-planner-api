@@ -2,7 +2,7 @@
 const router = require('express').Router();
 const axios = require('axios');
 const { getLocationId } = require('../middleware/getLocationId');
-const ActivitiesTemp = require('../models/ActivitiesTemp.model');
+const Activities = require('../models/Activities.model');
 
 const optionsRestaurant = {
   method: 'GET',
