@@ -37,6 +37,10 @@ const optionsActivities = {
 
 // the route is {baseUrl}/api/search/:citySearched
 
+function getHours(hoursArray) {
+  return hoursArray.map((hour) => [hour[0].open_time / 60, hour[0].close_time / 60]);
+}
+
 router.get('/:citySearched', getLocationId, async (req, res, next) => {
   try {
     optionsRestaurant.params.location_id = req.locationSearchedId;
@@ -47,12 +51,13 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
     await axios.request(optionsRestaurant)
       .then((response) => {
         restaurantList = response.data.data;
+
         restaurantList = restaurantList.map((restaurant) => ({
           location_id: restaurant.location_id,
           name: restaurant.name,
           description: restaurant.description,
           numberOfReviews: restaurant.num_reviews,
-          photo: restaurant.photo,
+          photo: restaurant.photo?.images?.large?.url,
           rawRating: restaurant.raw_ranking,
           ranking: restaurant.ranking,
           priceLevel: restaurant.price_level,
@@ -63,7 +68,7 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
           website: restaurant.website,
           email: restaurant.email,
           address: restaurant.address,
-          hours: restaurant.hours,
+          hours: getHours(restaurant.hours.week_ranges),
         }));
       }).catch((error) => {
         console.error(error);
@@ -77,7 +82,7 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
           name: activity.name,
           description: activity.description,
           numberOfReviews: activity.num_reviews,
-          photo: activity.photo,
+          photo: activity.photo?.images?.large?.url,
           rawRating: activity.raw_ranking,
           ranking: activity.ranking,
           priceLevel: activity.price_level,
