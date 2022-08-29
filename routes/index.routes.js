@@ -4,7 +4,7 @@ const router = require('express').Router();
 const activitiesRoutes = require('./activities.routes');
 const citiesRoutes = require('./cities.routes');
 const locationSearchRoutes = require('./locationSearch.routes');
-const tripListRoutes = require('./tripList.routes'); 
+const tripRoutes = require('./trip.routes'); 
 
 /* GET home page */
 router.get('/', (req, res, next) => {
@@ -13,8 +13,8 @@ router.get('/', (req, res, next) => {
 
 router.use('/auth', authRoutes);
 router.use('/search', locationSearchRoutes);
+router.use("/users", userRoutes);
+router.use("/trip", tripRoutes);   
 router.use('/activities', activitiesRoutes);
 router.use('/cities', citiesRoutes);
-router.use("/tripList", tripListRoutes);
-router.use('/users', userRoutes);
 module.exports = router;
