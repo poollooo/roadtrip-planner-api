@@ -73,23 +73,23 @@ router.get('/:citySearched', getLocationId, async (req, res, next) => {
     await axios.request(optionsActivities)
       .then((response) => {
         activityList = response.data.data;
-        activityList = activityList.map((attr) => ({
-          location_id: attr.location_id,
-          name: attr.name,
-          description: attr.description,
-          numberOfReviews: attr.num_reviews,
-          photo: attr.photo,
-          rawRating: attr.raw_ranking,
-          ranking: attr.ranking,
-          priceLevel: attr.price_level,
-          priceRange: attr.price,
-          tripAdvisorUrl: attr.web_url,
-          category: attr.category,
-          phone: attr.phone,
-          website: attr.website,
-          email: attr.email,
-          address: attr.address,
-          hours: attr.hours,
+        activityList = activityList.map((activity) => ({
+          location_id: activity.location_id,
+          name: activity.name,
+          description: activity.description,
+          numberOfReviews: activity.num_reviews,
+          photo: activity.photo,
+          rawRating: activity.raw_ranking,
+          ranking: activity.ranking,
+          priceLevel: activity.price_level,
+          priceRange: activity.price,
+          tripAdvisorUrl: activity.web_url,
+          category: activity.category,
+          phone: activity.phone,
+          website: activity.website,
+          email: activity.email,
+          address: activity.address,
+          hours: activity.hours,
         }));
         // console.log(restaurantList);
       }).catch((error) => {
