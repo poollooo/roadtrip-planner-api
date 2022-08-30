@@ -5,7 +5,7 @@ const tripSchema = new Schema({
 
   userId: { type: Schema.Types.ObjectId, ref: "User", require: true },
   name: Schema.Types.String,
-  locationId: { type: Schema.Types.Number, require: true },
+  cityId: { type: Schema.Types.ObjectId, ref: "City", require: true },
   startDate: { type: Schema.Types.Date, require: true },
   endDate: { type: Schema.Types.Date, require: true },
 });
