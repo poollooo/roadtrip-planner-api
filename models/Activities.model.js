@@ -2,8 +2,12 @@ const { Schema, model } = require('mongoose');
 
 const activitiesSchema = new Schema(
   {
-    locationId: {
-      type: Schema.Types.String,
+    cityLocationId: {
+      type: Schema.Types.Number,
+      required: true,
+    },
+    activityLocationId: {
+      type: Schema.Types.Number,
       unique: true,
     },
     name: {
