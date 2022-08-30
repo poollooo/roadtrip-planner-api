@@ -13,7 +13,7 @@ const selectedActivitiesSchema = new Schema({
     required: true,
   },
   activitiesId: {
-    type: Schema.Types.ObjectId,
+    type: Schema.Types.String,
     ref: "Activities",
     required: true,
   },
