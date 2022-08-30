@@ -5,11 +5,11 @@ module.exports.isSeeded = async (req, res, next) => {
   req.locationNameId;
   try {
     const findCities = await City.findOne({
-      locationId: req.locationSearchedId,
+      cityLocationId: req.locationSearchedId,
     });
     if (!findCities) {
       const newCity = await City.create({
-        locationId: req.locationSearchedId,
+        cityLocationId: req.locationSearchedId,
         name: req.locationNameId,
       });
       //res.status(201).json({ Message: "City added", newCity });
