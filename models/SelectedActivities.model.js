@@ -17,6 +17,8 @@ const selectedActivitiesSchema = new Schema({
     ref: "Activities",
     required: true,
   },
+}, {
+  timestamps:true
 });
 
 const SelectedActivities = model(
