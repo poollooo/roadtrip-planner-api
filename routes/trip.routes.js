@@ -2,9 +2,9 @@ const router = require("express").Router();
 const Trip = require("../models/Trip.model");
 const SelectedActivities = require("../models/SelectedActivities.model");
 const isAuthenticated = require("../middleware/isAuthenticated");
-const Activities = require("../models/Activities.model");
-const Cities = require("../models/Cities.model");
-const User =require("../models/User.model")
+
+
+
 
 // Create trip and all it's activities
 router.post("/", isAuthenticated, async (req, res, next) => {
@@ -73,14 +73,16 @@ router.get("/:tripId", isAuthenticated, async (req, res, next) => {
   }
 });
 
-//todo Modifier One specific Trip by tripId
+// Modifier One specific Trip's activities by tripId
 router.patch("/:tripId", isAuthenticated, async (req, res, next) => {
   try {
-    const { username } = req.params;
-    await SelectedActivities.findOneAndUpdate({ tripId: tripId }, req.body, {
-      new: true,
-    });
-    res.status(200).json();
+    const { tripId } = req.params; 
+    const activitiesToUpdate = await SelectedActivities.find({ tripId: tripId });
+    const activitiesToUpdatePromise = activitiesToUpdate.map((activity) => {
+    return activity.updateOne(req.body, {new: true,}).exec(); 
+    })
+    await Promise.all(activitiesToUpdatePromise);
+    res.status(200).json('Update Succeed !');
   } catch (error) {
     next(error);
   }
