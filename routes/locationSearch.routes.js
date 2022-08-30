@@ -74,7 +74,8 @@ router.get(
 
           restaurantList = restaurantList.map(async (restaurant) => {
             const newRestaurant = {
-              locationId: restaurant.location_id,
+              cityLocationId: req.locationSearchedId,
+              activityLocationId: restaurant.location_id,
               name: restaurant.name,
               description: restaurant.description,
               numberOfReviews: restaurant.num_reviews,
@@ -92,7 +93,7 @@ router.get(
               hours: getHours(restaurant.hours?.week_ranges),
             };
             const restaurantToCheck = await Activities.findOne({
-              locationId: newRestaurant.locationId,
+              activityLocationId: newRestaurant.activityLocationId,
             });
             if (!restaurantToCheck) {
               if (newRestaurant.name) {
@@ -113,7 +114,8 @@ router.get(
           activityList = response.data.data;
           activityList = activityList.map(async (activity) => {
             const newActivity = {
-              locationId: activity.location_id,
+              cityLocationId: req.locationSearchedId,
+              activityLocationId: activity.location_id,
               name: activity.name,
               description: activity.description,
               numberOfReviews: activity.num_reviews,
@@ -131,7 +133,7 @@ router.get(
               hours: getHours(activity.hours?.week_ranges),
             };
             const activityToCheck = await Activities.findOne({
-              locationId: newActivity.locationId,
+              activityLocationId: newActivity.activityLocationId,
             });
             if (!activityToCheck) {
               if (newActivity.name) {
