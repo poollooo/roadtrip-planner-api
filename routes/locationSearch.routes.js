@@ -65,7 +65,7 @@ router.get(
       let activityList;
       const newActivityList = [];
 
-      await Activities.deleteMany();
+      // await Activities.deleteMany();
 
       await axios
         .request(optionsRestaurant)
