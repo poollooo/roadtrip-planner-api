@@ -1,6 +1,6 @@
 # Dependency directory
 node_modules
-yarn.lock
+package-lock.json
 # Debug log from npm
 npm-debug.log
 
