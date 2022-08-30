@@ -77,12 +77,30 @@ router.get("/:tripId", isAuthenticated, async (req, res, next) => {
 router.patch("/:tripId", isAuthenticated, async (req, res, next) => {
   try {
     const { tripId } = req.params; 
-    const activitiesToUpdate = await SelectedActivities.find({ tripId: tripId });
-    const activitiesToUpdatePromise = activitiesToUpdate.map((activity) => {
-    return activity.updateOne(req.body, {new: true,}).exec(); 
-    })
-    await Promise.all(activitiesToUpdatePromise);
-    res.status(200).json('Update Succeed !');
+
+    const {selectedActivityId} =req.query
+    if (!tripId && !selectedActivityId) return res.status(404).json('Please Select !')
+
+    //update trip startDate/endDate (all selectedActivities date update with it)
+    if (tripId && !selectedActivityId ) {
+      await Trip.findByIdAndUpdate(tripId, req.body, { new: true });
+      const activitiesToUpdate = await SelectedActivities.find({
+        tripId: tripId,
+      });
+      const activitiesToUpdatePromise = activitiesToUpdate.map((activity) => {
+        return activity.updateOne(req.body, { new: true }).exec();
+      });
+      await Promise.all(activitiesToUpdatePromise);
+    }
+
+    //update one specific activity's startDate / endDate
+    if (tripId && selectedActivityId ) {
+      await SelectedActivities.findByIdAndUpdate(selectedActivityId, req.body, {
+        new: true,
+      });
+    }
+
+    res.status(200).json("Update Succeed !");
   } catch (error) {
     next(error);
   }
