@@ -73,7 +73,7 @@ router.get("/:tripId", isAuthenticated, async (req, res, next) => {
   }
 });
 
-//todo Modifier One specific Trip by username + tripId
+//todo Modifier One specific Trip by tripId
 router.patch("/:tripId", isAuthenticated, async (req, res, next) => {
   try {
     const { username } = req.params;
@@ -86,25 +86,43 @@ router.patch("/:tripId", isAuthenticated, async (req, res, next) => {
   }
 });
 
-//todo Delete One specific Trip by username + tripId
-router.delete("/:username/:tripId", isAuthenticated, async (req, res, next) => {
+
+// Delete all Trips & selectedActivities by userId
+router.delete("/all", isAuthenticated , async (req, res, next) => {
   try {
-    const { username } = req.params;
-    await Trip.findByIdAndDelete(tripId);
-    await SelectedActivities.findOneAndDelete({ tripId: tripId });
+    const allTrips = await Trip.find({ userId: req.user.id });
+
+    const allTripsIdDeleted = allTrips.map((trip) => {
+     return SelectedActivities.deleteMany({ tripId : trip._id });
+    });
+
+    await Promise.all(allTripsIdDeleted);
+
+    await Trip.deleteMany({ userId: req.user.id });
   } catch (error) {
     next(error);
   }
 });
 
-//todo Delete all Trips by username
-router.delete('/:username', async (req, res, next) => {
+// Delete One specific Trip tripId
+router.delete("/:tripId", isAuthenticated, async (req, res, next) => {
   try {
+     const { tripId } = req.params;
+     const tripFound = await Trip.findById(tripId);
+
+     if (!tripFound) {
+       return res.status(404).json("No trip found");
+     }
+
+     if (tripFound.userId.toString() !== req.user._id.toString()) {
+       return res.status(404).json("Not authenticated");
+     }
+    await Trip.findByIdAndRemove(tripId);
+    await SelectedActivities.deleteMany({ tripId: tripId }); 
     
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
-
+});
 
 module.exports = router;
