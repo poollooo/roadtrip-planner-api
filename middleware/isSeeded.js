@@ -18,5 +18,7 @@ module.exports.isSeeded = async (req, res, next) => {
     } else {
       res.sendStatus(200);
     }
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 };
