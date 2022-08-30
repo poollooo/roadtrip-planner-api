@@ -1,4 +1,4 @@
-const City = require("../models/Cities.model");
+const City = require("../models/City.model");
 
 module.exports.isSeeded = async (req, res, next) => {
   req.locationSearchedId;
