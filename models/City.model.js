@@ -4,6 +4,8 @@ const { Schema, model } = require("mongoose");
 const citiesSchema = new Schema({
   cityLocationId: { type: Schema.Types.Number, required: true, unique: true },
   name: Schema.Types.String,
+}, {
+  timestamps:true
 });
 
 const City = model("City", citiesSchema);
