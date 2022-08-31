@@ -13,7 +13,7 @@ const selectedActivitiesSchema = new Schema(
       ref: "Trip",
       required: true,
     },
-    activitiesLocationId: {
+    activityLocationId: {
       type: Schema.Types.String,
       ref: "Activities",
       required: true,

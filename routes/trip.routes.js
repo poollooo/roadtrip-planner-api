@@ -25,7 +25,7 @@ router.post("/", isAuthenticated, async (req, res, next) => {
        // startDate,
        // endDate,
        tripId: tripCreated._id,
-       activitiesLocationId: activity.activityLocationId,
+       activityLocationId: activity.activityLocationId,
      });
 
     });
