@@ -13,7 +13,7 @@ router.get("/", async (req, res, next) => {
 router.patch("/:username", isAuthenticated, isAdmin, async (req, res, next) => {
   const updatedValue = {};
   if (req.user.username !== req.params.username) {
-    return res.status(400).json({ message: "You can't acess this route" });
+    return res.status(400).json({ message: "You can't access this route" });
   }
   if (!req.body.username && !req.body.email) {
     return res.status(400).json({

@@ -6,7 +6,7 @@ module.exports.isValid = async (req, res, next) => {
   if (!req.user.isValid) {
     return res
       .status(400)
-      .json({ message: "You need to have a valid email to continue" });
+      .json({ message: "You need to validate your email to continue" });
   }
 
   next();
