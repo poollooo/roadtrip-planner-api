@@ -30,9 +30,9 @@ router.post("/", isAuthenticated, async (req, res, next) => {
 
     });
 
-   const data =  await Promise.all(newActivitiesPromise);
+   const activities =  await Promise.all(newActivitiesPromise);
+    res.status(200).json({ tripCreated, activities });
 
-    res.status(200).json(data);
   } catch (error) {
     res.status(400).json("Bad request");
     next(error);
@@ -46,6 +46,7 @@ router.get("/all", isAuthenticated, async (req, res, next) => {
     const trip = await Trip.find({ userId: req.user.id });
     res.status(200).json(trip);
   } catch (error) {
+    res.status(404).json('Trip Not Found !')
     next(error);
   }
 });
@@ -78,8 +79,8 @@ router.patch("/:tripId", isAuthenticated, async (req, res, next) => {
   try {
     const { tripId } = req.params; 
 
-    const {selectedActivityId} =req.query
-    if (!tripId && !selectedActivityId) return res.status(404).json('Please Select !')
+    const {selectedActivityId} = req.query
+    if (!tripId && !selectedActivityId) return res.status(404).json('Please Select One Trip / Activity !')
 
     //update trip startDate/endDate (all selectedActivities date update with it)
     if (tripId && !selectedActivityId ) {
@@ -102,6 +103,7 @@ router.patch("/:tripId", isAuthenticated, async (req, res, next) => {
 
     res.status(200).json("Update Succeed !");
   } catch (error) {
+    res.status(404).json("Something Went Wrong !")
     next(error);
   }
 });
@@ -119,12 +121,14 @@ router.delete("/all", isAuthenticated , async (req, res, next) => {
     await Promise.all(allTripsIdDeleted);
 
     await Trip.deleteMany({ userId: req.user.id });
+    res.status(200).json('There is nothing , new trip ? ')
   } catch (error) {
+    res.status(404).json('Delete All Error')
     next(error);
   }
 });
 
-// Delete One specific Trip tripId
+// Delete One specific Trip by tripId
 router.delete("/:tripId", isAuthenticated, async (req, res, next) => {
   try {
      const { tripId } = req.params;
@@ -139,8 +143,9 @@ router.delete("/:tripId", isAuthenticated, async (req, res, next) => {
      }
     await Trip.findByIdAndRemove(tripId);
     await SelectedActivities.deleteMany({ tripId: tripId }); 
-    
+    res.status(200).json("Deletion Successful")
   } catch (error) {
+    res.status(404).json(" Something went wrong !");
     next(error);
   }
 });
