@@ -6,4 +6,10 @@ router.get('/', async (req, res) => {
     res.json({ findAllActivities });
 });
 
+router.get('/:id', async (req, res) => {
+    const cityById = await City.findById(req.params.id)
+    res.json({ cityById })
+})
+
+
 module.exports = router;
