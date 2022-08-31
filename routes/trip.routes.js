@@ -2,9 +2,7 @@ const router = require("express").Router();
 const Trip = require("../models/Trip.model");
 const SelectedActivities = require("../models/SelectedActivities.model");
 const isAuthenticated = require("../middleware/isAuthenticated");
-
-
-
+const { isValid } = require("../middleware/isValid");
 
 // Create trip and all it's activities
 router.post("/", isAuthenticated, async (req, res, next) => {
@@ -19,34 +17,30 @@ router.post("/", isAuthenticated, async (req, res, next) => {
       // endDate,
     });
 
-
     const newActivitiesPromise = newActivityList.map(async (activity) => {
-     return SelectedActivities.create({
-       // startDate,
-       // endDate,
-       tripId: tripCreated._id,
-       activityLocationId: activity.activityLocationId,
-     });
-
+      return SelectedActivities.create({
+        // startDate,
+        // endDate,
+        tripId: tripCreated._id,
+        activityLocationId: activity.activityLocationId,
+      });
     });
 
-   const activities =  await Promise.all(newActivitiesPromise);
+    const activities = await Promise.all(newActivitiesPromise);
     res.status(200).json({ tripCreated, activities });
-
   } catch (error) {
     res.status(400).json("Bad request");
     next(error);
   }
 });
 
-// Get all Trip List by username 
+// Get all Trip List by username
 router.get("/all", isAuthenticated, async (req, res, next) => {
   try {
-
     const trip = await Trip.find({ userId: req.user.id });
     res.status(200).json(trip);
   } catch (error) {
-    res.status(404).json('Trip Not Found !')
+    res.status(404).json("Trip Not Found !");
     next(error);
   }
 });
@@ -54,19 +48,18 @@ router.get("/all", isAuthenticated, async (req, res, next) => {
 // Get one specific Trip with activities List  tripId
 router.get("/:tripId", isAuthenticated, async (req, res, next) => {
   try {
-    const { tripId } = req.params; 
+    const { tripId } = req.params;
     const tripFound = await Trip.findById(tripId);
 
     if (!tripFound) {
-      return res.status(404).json('No trip found'); 
-    } 
+      return res.status(404).json("No trip found");
+    }
 
     if (tripFound.userId.toString() !== req.user._id.toString()) {
       return res.status(404).json("Not authenticated");
     }
-    
 
-    const activitiesFound = await SelectedActivities.find({ tripId: tripId }); 
+    const activitiesFound = await SelectedActivities.find({ tripId: tripId });
 
     res.status(200).json(activitiesFound);
   } catch (error) {
@@ -75,15 +68,16 @@ router.get("/:tripId", isAuthenticated, async (req, res, next) => {
 });
 
 // Modifier One specific Trip's activities by tripId
-router.patch("/:tripId", isAuthenticated, async (req, res, next) => {
+router.patch("/:tripId", isAuthenticated, isValid, async (req, res, next) => {
   try {
-    const { tripId } = req.params; 
+    const { tripId } = req.params;
 
-    const {selectedActivityId} = req.query
-    if (!tripId && !selectedActivityId) return res.status(404).json('Please Select One Trip / Activity !')
+    const { selectedActivityId } = req.query;
+    if (!tripId && !selectedActivityId)
+      return res.status(404).json("Please Select One Trip / Activity !");
 
     //update trip startDate/endDate (all selectedActivities date update with it)
-    if (tripId && !selectedActivityId ) {
+    if (tripId && !selectedActivityId) {
       await Trip.findByIdAndUpdate(tripId, req.body, { new: true });
       const activitiesToUpdate = await SelectedActivities.find({
         tripId: tripId,
@@ -95,7 +89,7 @@ router.patch("/:tripId", isAuthenticated, async (req, res, next) => {
     }
 
     //update one specific activity's startDate / endDate
-    if (tripId && selectedActivityId ) {
+    if (tripId && selectedActivityId) {
       await SelectedActivities.findByIdAndUpdate(selectedActivityId, req.body, {
         new: true,
       });
@@ -103,27 +97,26 @@ router.patch("/:tripId", isAuthenticated, async (req, res, next) => {
 
     res.status(200).json("Update Succeed !");
   } catch (error) {
-    res.status(404).json("Something Went Wrong !")
+    res.status(404).json("Something Went Wrong !");
     next(error);
   }
 });
 
-
 // Delete all Trips & selectedActivities by userId
-router.delete("/all", isAuthenticated , async (req, res, next) => {
+router.delete("/all", isAuthenticated, async (req, res, next) => {
   try {
     const allTrips = await Trip.find({ userId: req.user.id });
 
     const allTripsIdDeleted = allTrips.map((trip) => {
-     return SelectedActivities.deleteMany({ tripId : trip._id });
+      return SelectedActivities.deleteMany({ tripId: trip._id });
     });
 
     await Promise.all(allTripsIdDeleted);
 
     await Trip.deleteMany({ userId: req.user.id });
-    res.status(200).json('There is nothing , new trip ? ')
+    res.status(200).json("There is nothing , new trip ? ");
   } catch (error) {
-    res.status(404).json('Delete All Error')
+    res.status(404).json("Delete All Error");
     next(error);
   }
 });
@@ -131,19 +124,19 @@ router.delete("/all", isAuthenticated , async (req, res, next) => {
 // Delete One specific Trip by tripId
 router.delete("/:tripId", isAuthenticated, async (req, res, next) => {
   try {
-     const { tripId } = req.params;
-     const tripFound = await Trip.findById(tripId);
+    const { tripId } = req.params;
+    const tripFound = await Trip.findById(tripId);
 
-     if (!tripFound) {
-       return res.status(404).json("No trip found");
-     }
+    if (!tripFound) {
+      return res.status(404).json("No trip found");
+    }
 
-     if (tripFound.userId.toString() !== req.user._id.toString()) {
-       return res.status(404).json("Not authenticated");
-     }
+    if (tripFound.userId.toString() !== req.user._id.toString()) {
+      return res.status(404).json("Not authenticated");
+    }
     await Trip.findByIdAndRemove(tripId);
-    await SelectedActivities.deleteMany({ tripId: tripId }); 
-    res.status(200).json("Deletion Successful")
+    await SelectedActivities.deleteMany({ tripId: tripId });
+    res.status(200).json("Deletion Successful");
   } catch (error) {
     res.status(404).json(" Something went wrong !");
     next(error);

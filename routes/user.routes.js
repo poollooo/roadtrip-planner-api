@@ -10,7 +10,7 @@ router.get("/", async (req, res, next) => {
   res.json({ findAll });
 });
 
-router.patch("/:username", isAuthenticated, isAdmin, async (req, res, next) => {
+router.patch("/:username", isAuthenticated, async (req, res, next) => {
   const updatedValue = {};
   if (req.user.username !== req.params.username) {
     return res.status(400).json({ message: "You can't access this route" });
@@ -77,7 +77,7 @@ router.patch("/:username", isAuthenticated, isAdmin, async (req, res, next) => {
   res.status(200).json({ message: "user updated", User: updatedUser });
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuthenticated, async (req, res) => {
   await User.findByIdAndDelete(req.params.id);
   res.sendStatus(204);
 });
