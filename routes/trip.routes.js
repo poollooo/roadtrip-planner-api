@@ -22,11 +22,11 @@ router.post("/", isAuthenticated, async (req, res, next) => {
 
     const newActivitiesPromise = newActivityList.map(async (activity) => {
      return SelectedActivities.create({
-        // startDate,
-        // endDate,
-        tripId: tripCreated._id,
-        activitiesId: activity.activityLocationId,
-      });
+       // startDate,
+       // endDate,
+       tripId: tripCreated._id,
+       activitiesLocationId: activity.activityLocationId,
+     });
 
     });
 
