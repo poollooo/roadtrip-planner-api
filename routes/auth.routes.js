@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const nodemailer = require("nodemailer");
 
 // ℹ️ Handles password encryption
 const bcrypt = require("bcrypt");
@@ -10,13 +11,16 @@ const jsonWebToken = require("jsonwebtoken");
 // How many rounds should bcrypt run the salt (default [10 - 12 rounds])
 const saltRounds = 10;
 const { TOKEN_SECRET } = process.env;
-
+//transporter
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.MDP_MAIL,
+  },
+});
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
-
-router.get("/loggedin", (req, res) => {
-  res.json(req.user);
-});
 
 router.post("/signup", (req, res) => {
   const { username, password, email } = req.body;
@@ -67,16 +71,31 @@ router.post("/signup", (req, res) => {
           email,
         });
       })
-      .then(({ username, email }) => {
-        // Bind the user to the session object
-        const payload = { username };
+      .then(async (User) => {
+        try {
+          const emailToken = jsonWebToken.sign(
+            {
+              user: User._id,
+            },
+            process.env.EMAIL_SECRET,
+            {
+              expiresIn: "1d",
+            }
+          );
 
-        const token = jsonWebToken.sign(payload, TOKEN_SECRET, {
-          algorithm: "HS256",
-          expiresIn: "7days",
-        });
+          const url = `http://${process.env.ORIGIN}/confirmation/${emailToken}`;
 
-        res.status(201).json({ username, email, token });
+          await transporter.sendMail({
+            to: User.email,
+            subject: "Confirm Email",
+            html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
+          });
+          res
+            .status(201)
+            .json({ message: "User created", Satus: "Mail sent at " + email });
+        } catch (e) {
+          console.log(e);
+        }
       })
       .catch((error) => {
         if (error instanceof mongoose.Error.ValidationError) {
@@ -94,6 +113,20 @@ router.post("/signup", (req, res) => {
   });
 });
 
+router.get("/confirmation/:tokenId", async (req, res, next) => {
+  try {
+    const tokenValid = jsonWebToken.verify(
+      req.params.tokenId,
+      process.env.EMAIL_SECRET
+    );
+
+    await User.findOneAndUpdate({ _id: tokenValid.user }, { isValid: true });
+
+    res.json({ message: "Your account is now valid" });
+  } catch (e) {
+    next(e);
+  }
+});
 router.post("/login", (req, res, next) => {
   const { username, password } = req.body;
 
@@ -144,13 +177,6 @@ router.post("/login", (req, res, next) => {
     });
 });
 
-// router.get("/logout", isLoggedIn, (req, res) => {
-//   req.session.destroy((err) => {
-//     if (err) {
-//       return res.status(500).json({ errorMessage: err.message });
-//     }
-//     res.json({ message: "Done" });
-//   });
-// });
+//verification of the email (sending)
 
 module.exports = router;

@@ -21,6 +21,12 @@ const userSchema = new Schema(
       lowercase: true,
       match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gi,
     },
+    isValid: { type: Schema.Types.Boolean, default: false },
+    role: {
+      type: Schema.Types.String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
