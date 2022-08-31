@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const User = require("../models/User.model");
 const isAuthenticated = require("../middleware/isAuthenticated");
-const isValid = require("../middleware/isValid");
+const { isValid } = require("../middleware/isValid");
+const { isAdmin } = require("../middleware/isAdmin");
 
 /* GET home page */
 router.get("/", async (req, res, next) => {
@@ -9,7 +10,7 @@ router.get("/", async (req, res, next) => {
   res.json({ findAll });
 });
 
-router.patch("/:username", isAuthenticated, isValid, async (req, res, next) => {
+router.patch("/:username", isAuthenticated, isAdmin, async (req, res, next) => {
   const updatedValue = {};
   if (req.user.username !== req.params.username) {
     return res.status(400).json({ message: "You can't acess this route" });
@@ -28,7 +29,7 @@ router.patch("/:username", isAuthenticated, isValid, async (req, res, next) => {
   // if the username is filled, checking that it is correct
   if (req.body.username) {
     // checking if the user name is different than the actual one
-    if (req.body.username === res.params.username) {
+    if (req.body.username === req.params.username) {
       return res
         .status(400)
         .json({ errorMessage: "This is already your username." });

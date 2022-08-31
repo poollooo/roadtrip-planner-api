@@ -155,8 +155,8 @@ router.post("/login", (req, res, next) => {
         if (!isSamePassword) {
           return res.status(400).json({ errorMessage: "Wrong credentials." });
         }
-
-        const payload = { username };
+        console.log(user._id);
+        const payload = { user: user._id };
 
         const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
           algorithm: "HS256",
