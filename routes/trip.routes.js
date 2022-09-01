@@ -32,22 +32,29 @@ router.post("/", isAuthenticated, async (req, res, next) => {
 
     //doing a map to find the ID of the activies (stored in database) in  order to have a reference for the populate in the get route
     const idActivityPromises = newActivityList.map((activity) => {
+
       return getIdofActivity(activity.activityLocationId);
     });
 
     //waiting for all the promises
     const idActivities = await Promise.all(idActivityPromises);
 
-    const newActivitiesPromise = newActivityList.map((activity, index) => {
-      return SelectedActivities.create({
-        startDate,
-        endDate,
-        name,
-        tripId: tripCreated._id,
-        //adding the found ID while creating the activities
-        activityId: idActivities[index].id,
-      });
-    });
+    const newActivitiesPromise = newActivityList
+      .map((activity, index) => {
+        if (!idActivities[index]) {
+          return;
+        }
+
+        return SelectedActivities.create({
+          startDate: activity.startDate,
+          endDate: activity.endDate,
+          name: activity.name,
+          tripId: tripCreated._id,
+          //adding the found ID while creating the activities
+          activityId: idActivities[index].id,
+        });
+      })
+      .filter((x) => x);
 
     const activities = await Promise.all(newActivitiesPromise);
     res.status(200).json({ tripCreated, activities });
