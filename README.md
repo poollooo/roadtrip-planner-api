@@ -1,7 +1,37 @@
 
 # Roadtrip Planner Backend
 
-  
+## Features
+We believe a life without journeys is one not lived at all.
+Our roadtrip planner helps you get the most out of your vacations.
+Discover the most iconic restaurants & the most epic activities so that you live your life to the fullest.
+
+## Model
+- User
+- City
+- Activity
+- SelectedActivities
+- Trip
+## Route
+- /user.routes
+- /trip.routes
+- /auth.routes
+- /activities.routes
+- /locationSearch.routes
+- /cities.routes
+
+## Features
+- Authentication 
+- Email Verifications 
+- Fetching External API
+- Planning
+
+## Configuration
+Here is our API link (https://roadtrip-planner-ih.herokuapp.com/api). You can find more information about how to use it in the postman documentation below.
+
+### Postman documentation
+To use our API, you can refer to our postman documentation 📜.
+https://documenter.getpostman.com/view/22850983/VUxPuScf
 
 ## Getting Started
 
