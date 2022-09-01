@@ -1,4 +1,6 @@
 const axios = require("axios");
+const City = require("../models/City.model");
+const Activities = require("../models/Activities.model");
 
 const options = {
   method: "GET",
@@ -20,17 +22,25 @@ const options = {
 };
 
 module.exports.getLocationId = async (req, res, next) => {
+
   const { citySearched } = req.params;
-  options.params.query = citySearched;
-  axios
-    .request(options)
-    .then(({ data }) => {
-      const locationSearchedId = data.data[0].result_object.location_id;
-      req.locationSearchedId = locationSearchedId;
-      req.locationNameId = data.data[0].result_object.name;
-      next();
-    })
-    .catch((error) => {
-      next(error);
-    });
+  const citySeeded = await City.findOne({ name: citySearched.toLowerCase() });
+
+  if (citySeeded) {
+    const foundedCity = await Activities.find({ cityLocationId: citySeeded.cityLocationId });
+    res.status(200).json({ foundedCity });
+  } else {
+    options.params.query = citySearched;
+    axios
+      .request(options)
+      .then(({ data }) => {
+        const locationSearchedId = data.data[0].result_object.location_id;
+        req.locationSearchedId = locationSearchedId;
+        req.locationNameId = data.data[0].result_object.name;
+        next();
+      })
+      .catch((error) => {
+        next(error);
+      });
+  }
 };
