@@ -6,7 +6,7 @@ const { isAdmin } = require("../middleware/isAdmin");
 
 /* GET home page */
 router.get("/", async (req, res, next) => {
-  const findAll = await User.find();
+  const findAll = await User.find().select("-password");
   res.json({ findAll });
 });
 
@@ -91,7 +91,7 @@ router.patch("/:username", isAuthenticated, async (req, res, next) => {
     {
       new: true,
     }
-  );
+  ).select("-password");
 
   res.status(200).json({ message: "user updated", User: updatedUser });
 });

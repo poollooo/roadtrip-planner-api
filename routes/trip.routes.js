@@ -3,38 +3,56 @@ const Trip = require("../models/Trip.model");
 const SelectedActivities = require("../models/SelectedActivities.model");
 const isAuthenticated = require("../middleware/isAuthenticated");
 const { isValid } = require("../middleware/isValid");
+const Activities = require("../models/Activities.model");
 
 router.get("/", async (req, res, next) => {
   const findAll = await Trip.find();
   res.json({ findAll });
 });
 
+function getIdofActivity(params) {
+  return Activities.findOne({
+    activityLocationId: params,
+  }).select({ _id: 1 });
+}
+
 // Create trip and all it's activities
 router.post("/", isAuthenticated, async (req, res, next) => {
   try {
-    const { newActivityList } = req.body;
+    const { newActivityList, startDate, endDate, name } = req.body;
     const user = req.user;
 
     const tripCreated = await Trip.create({
       userId: user._id,
       cityId: newActivityList[0].cityLocationId,
-      // startDate,
-      // endDate,
+      startDate,
+      endDate,
+      name,
     });
 
-    const newActivitiesPromise = newActivityList.map(async (activity) => {
+    //doing a map to find the ID of the activies (stored in database) in  order to have a reference for the populate in the get route
+    const idActivityPromises = newActivityList.map((activity) => {
+      return getIdofActivity(activity.activityLocationId);
+    });
+
+    //waiting for all the promises
+    const idActivities = await Promise.all(idActivityPromises);
+
+    const newActivitiesPromise = newActivityList.map((activity, index) => {
       return SelectedActivities.create({
-        // startDate,
-        // endDate,
+        startDate,
+        endDate,
+        name,
         tripId: tripCreated._id,
-        activityLocationId: activity.activityLocationId,
+        //adding the found ID while creating the activities
+        activityId: idActivities[index].id,
       });
     });
 
     const activities = await Promise.all(newActivitiesPromise);
     res.status(200).json({ tripCreated, activities });
   } catch (error) {
-    res.status(400).json("Bad request");
+    //res.status(400).json("Bad request");
     next(error);
   }
 });
@@ -64,7 +82,9 @@ router.get("/:tripId", isAuthenticated, async (req, res, next) => {
       return res.status(404).json("Not authenticated");
     }
 
-    const activitiesFound = await SelectedActivities.find({ tripId: tripId });
+    const activitiesFound = await SelectedActivities.find({
+      tripId: tripId,
+    }).populate("activityId");
 
     res.status(200).json(activitiesFound);
   } catch (error) {

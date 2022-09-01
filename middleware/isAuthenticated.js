@@ -10,7 +10,7 @@ const isAuthenticated = async (req, res, next) => {
   const userToken = jsonWebToken.verify(token, process.env.TOKEN_SECRET);
 
   try {
-    const user = await User.findById(userToken.user);
+    const user = await User.findById(userToken.user).select("-password");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
