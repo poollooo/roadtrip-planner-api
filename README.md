@@ -4,7 +4,7 @@
 ## Features
 We believe a life without journeys is one not lived at all.
 Our roadtrip planner helps you get the most out of your vacations.
-Discover the most iconic restaurants & the most epic activities so that you live your life to the fullest.
+Discover the most iconic restaurants & the most epic activities to do in every city in the world, so that you live your life to the fullest.
 
 ## Model
 - User
