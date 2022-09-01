@@ -13,7 +13,7 @@ module.exports.isSeeded = async (req, res, next) => {
         name: req.locationNameId,
       });
       //res.status(201).json({ Message: "City added", newCity });
-      console.log({ Message: "City added", newCity });
+
       next();
     } else {
       res.sendStatus(200);

@@ -11,7 +11,6 @@ router.get("/", async (req, res, next) => {
 });
 
 function getIdofActivity(params) {
-  console.log(typeof params);
   return Activities.findOne({
     activityLocationId: params,
   }).select({ _id: 1 });
@@ -31,12 +30,13 @@ router.post("/", isAuthenticated, async (req, res, next) => {
       name,
     });
 
+    //doing a map to find the ID of the activies (stored in database) in  order to have a reference for the populate in the get route
     const idActivityPromises = newActivityList.map((activity) => {
       return getIdofActivity(activity.activityLocationId);
     });
 
+    //waiting for all the promises
     const idActivities = await Promise.all(idActivityPromises);
-    console.log(idActivities);
 
     const newActivitiesPromise = newActivityList.map((activity, index) => {
       return SelectedActivities.create({
@@ -44,6 +44,7 @@ router.post("/", isAuthenticated, async (req, res, next) => {
         endDate,
         name,
         tripId: tripCreated._id,
+        //adding the found ID while creating the activities
         activityId: idActivities[index].id,
       });
     });
