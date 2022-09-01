@@ -72,7 +72,7 @@ router.patch("/:username", isAuthenticated, async (req, res, next) => {
     {
       new: true,
     }
-  );
+  ).select("-password");
 
   res.status(200).json({ message: "user updated", User: updatedUser });
 });

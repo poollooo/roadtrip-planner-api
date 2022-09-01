@@ -3,38 +3,55 @@ const Trip = require("../models/Trip.model");
 const SelectedActivities = require("../models/SelectedActivities.model");
 const isAuthenticated = require("../middleware/isAuthenticated");
 const { isValid } = require("../middleware/isValid");
+const Activities = require("../models/Activities.model");
 
 router.get("/", async (req, res, next) => {
   const findAll = await Trip.find();
   res.json({ findAll });
 });
 
+function getIdofActivity(params) {
+  console.log(typeof params);
+  return Activities.findOne({
+    activityLocationId: params,
+  }).select({ _id: 1 });
+}
+
 // Create trip and all it's activities
 router.post("/", isAuthenticated, async (req, res, next) => {
   try {
-    const { newActivityList } = req.body;
+    const { newActivityList, startDate, endDate, name } = req.body;
     const user = req.user;
 
     const tripCreated = await Trip.create({
       userId: user._id,
       cityId: newActivityList[0].cityLocationId,
-      // startDate,
-      // endDate,
+      startDate,
+      endDate,
+      name,
     });
 
-    const newActivitiesPromise = newActivityList.map(async (activity) => {
+    const idActivityPromises = newActivityList.map((activity) => {
+      return getIdofActivity(activity.activityLocationId);
+    });
+
+    const idActivities = await Promise.all(idActivityPromises);
+    console.log(idActivities);
+
+    const newActivitiesPromise = newActivityList.map((activity, index) => {
       return SelectedActivities.create({
-        // startDate,
-        // endDate,
+        startDate,
+        endDate,
+        name,
         tripId: tripCreated._id,
-        activityLocationId: activity.activityLocationId,
+        activityId: idActivities[index].id,
       });
     });
 
     const activities = await Promise.all(newActivitiesPromise);
     res.status(200).json({ tripCreated, activities });
   } catch (error) {
-    res.status(400).json("Bad request");
+    //res.status(400).json("Bad request");
     next(error);
   }
 });
@@ -66,7 +83,7 @@ router.get("/:tripId", isAuthenticated, async (req, res, next) => {
 
     const activitiesFound = await SelectedActivities.find({
       tripId: tripId,
-    }).populate("Activities");
+    }).populate("activityId");
 
     res.status(200).json(activitiesFound);
   } catch (error) {
