@@ -10,6 +10,25 @@ router.get("/", async (req, res, next) => {
   res.json({ findAll });
 });
 
+// Get one specific User by its userId
+
+router.get("/:userId", isAuthenticated, isAdmin, async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const userFound = await User.findById(userId);
+
+    if (!userFound) {
+      return res.status(404).json("No user found");
+    }
+
+    const userFoundById = await User.findById(userId);
+
+    res.status(200).json(userFoundById);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.patch("/:username", isAuthenticated, async (req, res, next) => {
   const updatedValue = {};
   if (req.user.username !== req.params.username) {
