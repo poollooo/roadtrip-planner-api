@@ -1,4 +1,5 @@
 const City = require("../models/City.model");
+const Activities = require("../models/Activities.model");
 
 module.exports.isSeeded = async (req, res, next) => {
   req.locationSearchedId;
@@ -10,13 +11,12 @@ module.exports.isSeeded = async (req, res, next) => {
     if (!findCities) {
       const newCity = await City.create({
         cityLocationId: req.locationSearchedId,
-        name: req.locationNameId,
+        name: req.locationNameId.toLowerCase(),
       });
-      //res.status(201).json({ Message: "City added", newCity });
 
       next();
     } else {
-      res.sendStatus(200);
+      res.sendStatus(200)
     }
   } catch (error) {
     next(error);
