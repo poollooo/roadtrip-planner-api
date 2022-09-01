@@ -93,9 +93,7 @@ router.post("/signup", (req, res) => {
           res
             .status(201)
             .json({ message: "User created", Satus: "Mail sent at " + email });
-        } catch (e) {
-          console.log(e);
-        }
+        } catch (e) {}
       })
       .catch((error) => {
         if (error instanceof mongoose.Error.ValidationError) {
@@ -107,7 +105,7 @@ router.post("/signup", (req, res) => {
               "Username need to be unique. The username you chose is already in use.",
           });
         }
-        console.log(error);
+
         return res.status(500).json({ errorMessage: error.message });
       });
   });
