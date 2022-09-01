@@ -4,6 +4,11 @@ const SelectedActivities = require("../models/SelectedActivities.model");
 const isAuthenticated = require("../middleware/isAuthenticated");
 const { isValid } = require("../middleware/isValid");
 
+router.get("/", async (req, res, next) => {
+  const findAll = await Trip.find();
+  res.json({ findAll });
+});
+
 // Create trip and all it's activities
 router.post("/", isAuthenticated, async (req, res, next) => {
   try {
