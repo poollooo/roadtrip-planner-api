@@ -6,7 +6,7 @@ const { isAdmin } = require("../middleware/isAdmin");
 
 /* GET home page */
 router.get("/", async (req, res, next) => {
-  const findAll = await User.find();
+  const findAll = await User.find().select("-password");
   res.json({ findAll });
 });
 

@@ -64,7 +64,9 @@ router.get("/:tripId", isAuthenticated, async (req, res, next) => {
       return res.status(404).json("Not authenticated");
     }
 
-    const activitiesFound = await SelectedActivities.find({ tripId: tripId });
+    const activitiesFound = await SelectedActivities.find({
+      tripId: tripId,
+    }).populate("Activities");
 
     res.status(200).json(activitiesFound);
   } catch (error) {
