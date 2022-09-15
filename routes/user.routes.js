@@ -10,20 +10,20 @@ router.get("/", async (req, res, next) => {
   res.json({ findAll });
 });
 
-// Get one specific User by its userId
+// Get one specific User by its username
 
-router.get("/:userId", isAuthenticated, isAdmin, async (req, res, next) => {
+router.get("/:username", isAuthenticated, isAdmin, async (req, res, next) => {
   try {
-    const { userId } = req.params;
-    const userFound = await User.findById(userId);
+    const { username } = req.params;
+    const userFound = await User.findOne({ username }).select("-password");
 
     if (!userFound) {
       return res.status(404).json("No user found");
     }
 
-    const userFoundById = await User.findById(userId);
+    const userFoundByUsername = await User.findOne({ username }).select("-password");
 
-    res.status(200).json(userFoundById);
+    res.status(200).json(userFoundByUsername);
   } catch (error) {
     next(error);
   }
