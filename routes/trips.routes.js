@@ -6,14 +6,22 @@ const { isValid } = require("../middleware/isValid");
 const Activities = require("../models/Activities.model");
 
 router.get("/", async (req, res, next) => {
-  const findAll = await Trip.find();
-  res.json({ findAll });
+  try {
+    const findAll = await Trip.find();
+    res.json({ findAll });
+  } catch (error) {
+    next(error);
+  }
 });
 
 function getIdOfActivity(params) {
-  return Activities.findOne({
-    activityLocationId: params,
-  }).select({ _id: 1 });
+  try {
+    return Activities.findOne({
+      activityLocationId: params,
+    }).select({ _id: 1 });
+  } catch (error) {
+    next(error);
+  }
 }
 
 // Create trip and all it's activities
@@ -146,7 +154,7 @@ router.delete("/all", isAuthenticated, async (req, res, next) => {
     await Promise.all(allTripsIdDeleted);
 
     await Trip.deleteMany({ userId: req.user.id });
-    res.status(200).json("There is nothing , new trip ? ");
+    res.status(200).json("You don't have planned trips anymore, do you want to go an a new adventure?");
   } catch (error) {
     res.status(404).json("Delete All Error");
     next(error);
