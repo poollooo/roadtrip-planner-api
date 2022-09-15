@@ -93,7 +93,9 @@ router.post("/signup", (req, res) => {
           res
             .status(201)
             .json({ message: "User created", Satus: "Mail sent at " + email });
-        } catch (e) {}
+        } catch (error) {
+          next(error)
+        }
       })
       .catch((error) => {
         if (error instanceof mongoose.Error.ValidationError) {
@@ -121,8 +123,8 @@ router.get("/confirmation/:tokenId", async (req, res, next) => {
     await User.findOneAndUpdate({ _id: tokenValid.user }, { isValid: true });
 
     res.json({ message: "Your account is now valid" });
-  } catch (e) {
-    next(e);
+  } catch (error) {
+    next(error);
   }
 });
 router.post("/login", (req, res, next) => {
@@ -167,11 +169,11 @@ router.post("/login", (req, res, next) => {
       });
     })
 
-    .catch((err) => {
+    .catch((error) => {
       // in this case we are sending the error handling to the error handling middleware that is defined in the error handling file
       // you can just as easily run the res.status that is commented out below
-      next(err);
-      // return res.status(500).render("login", { errorMessage: err.message });
+      next(error);
+      // return res.status(500).render("login", { errorMessage: error.message });
     });
 });
 
