@@ -8,7 +8,11 @@ const tripRoutes = require('./trips.routes');
 
 /* GET home page */
 router.get('/', (req, res, next) => {
-  res.json('All good in here');
+  try {
+    res.json('All good in here');
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.use('/auth', authRoutes);
