@@ -10,7 +10,7 @@ router.get("/", async (req, res, next) => {
   res.json({ findAll });
 });
 
-function getIdofActivity(params) {
+function getIdOfActivity(params) {
   return Activities.findOne({
     activityLocationId: params,
   }).select({ _id: 1 });
@@ -33,7 +33,7 @@ router.post("/", isAuthenticated, async (req, res, next) => {
     //doing a map to find the ID of the activies (stored in database) in  order to have a reference for the populate in the get route
     const idActivityPromises = newActivityList.map((activity) => {
 
-      return getIdofActivity(activity.activityLocationId);
+      return getIdOfActivity(activity.activityLocationId);
     });
 
     //waiting for all the promises
@@ -64,7 +64,7 @@ router.post("/", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// Get all Trip List by username
+// Get all Trips List of a user by username
 router.get("/all", isAuthenticated, async (req, res, next) => {
   try {
     const trip = await Trip.find({ userId: req.user.id });
@@ -75,7 +75,7 @@ router.get("/all", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// Get one specific Trip with activities List  tripId
+// Get one specific Trip by tripId with activities List
 router.get("/:tripId", isAuthenticated, async (req, res, next) => {
   try {
     const { tripId } = req.params;
@@ -99,7 +99,7 @@ router.get("/:tripId", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// Modifier One specific Trip's activities by tripId
+// Modify One specific Trip's activities by tripId
 router.patch("/:tripId", isAuthenticated, isValid, async (req, res, next) => {
   try {
     const { tripId } = req.params;
@@ -134,7 +134,7 @@ router.patch("/:tripId", isAuthenticated, isValid, async (req, res, next) => {
   }
 });
 
-// Delete all Trips & selectedActivities by userId
+// Delete all Trips & selectedActivities of a user by userId
 router.delete("/all", isAuthenticated, async (req, res, next) => {
   try {
     const allTrips = await Trip.find({ userId: req.user.id });
