@@ -1,3 +1,4 @@
+const isAuthenticated = require("../middleware/isAuthenticated");
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
 
