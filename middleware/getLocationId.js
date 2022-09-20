@@ -37,8 +37,6 @@ module.exports.getLocationId = async (req, res, next) => {
         const locationSearchedId = data.data[0].result_object.location_id;
         req.locationSearchedId = locationSearchedId;
         req.locationNameId = data.data[0].result_object.name;
-      })
-      .then(() => {
         const newCity = City.create({
           cityLocationId: req.locationSearchedId,
           name: req.locationNameId.toLowerCase(),
