@@ -40,7 +40,7 @@ router.post("/signup", (req, res) => {
   const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gi;
   if (!regexEmail.test(email)) {
     return res.status(400).json({
-      errorMessage: "Please provide a valide email",
+      errorMessage: "Please provide a valid email",
     });
   }
 
@@ -94,6 +94,8 @@ router.post("/signup", (req, res) => {
             html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
           });
 
+          const payload = { User: User._id };
+
           const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
             algorithm: "HS256",
             expiresIn: "7d",
@@ -101,7 +103,7 @@ router.post("/signup", (req, res) => {
 
           res
             .status(201)
-            .json({ message: "User created", Satus: "Mail sent at " + email, token: token });
+            .json({ message: "User created", status: "Mail sent at " + email, token: token });
         } catch (error) {
           next(error)
         }
