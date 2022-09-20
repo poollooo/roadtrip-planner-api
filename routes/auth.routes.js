@@ -23,6 +23,8 @@ const transporter = nodemailer.createTransport({
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
 
+
+
 router.post("/signup", (req, res) => {
   const { username, password, email } = req.body;
 
@@ -91,9 +93,15 @@ router.post("/signup", (req, res) => {
             subject: "Confirm Email",
             html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
           });
+
+          const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
+            algorithm: "HS256",
+            expiresIn: "7d",
+          });
+
           res
             .status(201)
-            .json({ message: "User created", Satus: "Mail sent at " + email });
+            .json({ message: "User created", Satus: "Mail sent at " + email, token: token });
         } catch (error) {
           next(error)
         }
