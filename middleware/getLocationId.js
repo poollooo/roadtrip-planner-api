@@ -27,8 +27,8 @@ module.exports.getLocationId = async (req, res, next) => {
   const citySeeded = await City.findOne({ name: citySearched.toLowerCase() });
 
   if (citySeeded) {
-    const foundedCity = await Activities.find({ cityLocationId: citySeeded.cityLocationId });
-    res.status(200).json({ foundedCity });
+    const newActivityList = await Activities.find({ cityLocationId: citySeeded.cityLocationId });
+    res.status(200).json({ newActivityList });
   } else {
     options.params.query = citySearched;
     axios
