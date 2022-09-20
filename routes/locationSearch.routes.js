@@ -2,7 +2,6 @@
 const router = require("express").Router();
 const axios = require("axios");
 const { getLocationId } = require("../middleware/getLocationId");
-const { isSeeded } = require("../middleware/isSeeded");
 const Activities = require("../models/Activities.model");
 
 const optionsRestaurant = {
@@ -56,7 +55,6 @@ function getHours(hoursArray) {
 router.get(
   "/:citySearched",
   getLocationId,
-  isSeeded,
   async (req, res, next) => {
     try {
       optionsRestaurant.params.location_id = req.locationSearchedId;
