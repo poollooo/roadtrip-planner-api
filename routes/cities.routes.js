@@ -3,8 +3,8 @@ const City = require('../models/City.model');
 
 router.get('/', async (req, res) => {
     try {
-        const findAllActivities = await City.find();
-        res.json({ findAllActivities });
+        const allCities = await City.find();
+        res.json({ allCities });
     } catch (error) {
         next(error);
     }
