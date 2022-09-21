@@ -196,7 +196,11 @@ router.get("/verify", (req, res, next) => {
 
   // Send back the object with user data
   // previously set as the token payload
-  res.status(200).json(req.payload);
+  try {
+    res.status(200).json(req.payload);
+  } catch (error) {
+    next(error);
+  }
 });
 
 //verification of the email (sending)
