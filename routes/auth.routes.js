@@ -73,40 +73,36 @@ router.post("/signup", (req, res) => {
         });
       })
       .then(async (User) => {
-        try {
-          const emailToken = jsonWebToken.sign(
-            {
-              user: User._id,
-            },
-            process.env.EMAIL_SECRET,
-            {
-              expiresIn: "1d",
-            }
-          );
+        const emailToken = jsonWebToken.sign(
+          {
+            user: User._id,
+          },
+          process.env.EMAIL_SECRET,
+          {
+            expiresIn: "1d",
+          }
+        );
 
-          const url = `http://${process.env.ORIGIN}/confirmation/${emailToken}`;
+        const url = `http://${process.env.ORIGIN}/confirmation/${emailToken}`;
 
-          await transporter.sendMail({
-            to: User.email,
-            subject: "Confirm Email",
-            html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
-          });
+        await transporter.sendMail({
+          to: User.email,
+          subject: "Confirm Email",
+          html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
+        });
 
-          const payload = { User: User._id };
+        const payload = { User: User._id };
 
-          const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
-            algorithm: "HS256",
-            expiresIn: "7d",
-          });
+        const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
+          algorithm: "HS256",
+          expiresIn: "7d",
+        });
 
-          res.status(201).json({
-            message: "User created",
-            status: "Mail sent at " + email,
-            token: token,
-          });
-        } catch (error) {
-          next(error);
-        }
+        res.status(201).json({
+          message: "User created",
+          status: "Mail sent at " + email,
+          token: token,
+        });
       })
       .catch((error) => {
         if (error instanceof mongoose.Error.ValidationError) {
@@ -119,7 +115,7 @@ router.post("/signup", (req, res) => {
           });
         }
 
-        return res.status(500).json({ errorMessage: error.message });
+        return res.status(500).json({ errorMessage: "ici" + error.message });
       });
   });
 });
