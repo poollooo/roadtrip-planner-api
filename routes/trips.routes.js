@@ -27,12 +27,13 @@ function getIdOfActivity(params) {
 // Create trip and all it's activities
 router.post("/", isAuthenticated, async (req, res, next) => {
   try {
-    const { newActivityList, startDate, endDate, name } = req.body;
+    const { newActivityList, startDate, endDate, name, cityLocationId } =
+      req.body;
     const user = req.user;
 
     const tripCreated = await Trip.create({
       userId: user._id,
-      cityId: newActivityList[0].cityLocationId,
+      cityId: cityLocationId,
       startDate,
       endDate,
       name,
@@ -40,7 +41,6 @@ router.post("/", isAuthenticated, async (req, res, next) => {
 
     //doing a map to find the ID of the activies (stored in database) in  order to have a reference for the populate in the get route
     const idActivityPromises = newActivityList.map((activity) => {
-
       return getIdOfActivity(activity.activityLocationId);
     });
 
@@ -68,6 +68,7 @@ router.post("/", isAuthenticated, async (req, res, next) => {
     res.status(200).json({ tripCreated, activities });
   } catch (error) {
     //res.status(400).json("Bad request");
+
     next(error);
   }
 });
@@ -154,7 +155,11 @@ router.delete("/all", isAuthenticated, async (req, res, next) => {
     await Promise.all(allTripsIdDeleted);
 
     await Trip.deleteMany({ userId: req.user.id });
-    res.status(200).json("You don't have planned trips anymore, do you want to go an a new adventure?");
+    res
+      .status(200)
+      .json(
+        "You don't have planned trips anymore, do you want to go an a new adventure?"
+      );
   } catch (error) {
     res.status(404).json("Delete All Error");
     next(error);
