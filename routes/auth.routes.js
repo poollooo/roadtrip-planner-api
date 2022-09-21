@@ -23,8 +23,6 @@ const transporter = nodemailer.createTransport({
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
 
-
-
 router.post("/signup", (req, res) => {
   const { username, password, email } = req.body;
 
@@ -101,11 +99,13 @@ router.post("/signup", (req, res) => {
             expiresIn: "7d",
           });
 
-          res
-            .status(201)
-            .json({ message: "User created", status: "Mail sent at " + email, token: token });
+          res.status(201).json({
+            message: "User created",
+            status: "Mail sent at " + email,
+            token: token,
+          });
         } catch (error) {
-          next(error)
+          next(error);
         }
       })
       .catch((error) => {
@@ -189,11 +189,10 @@ router.post("/login", (req, res, next) => {
     });
 });
 
-router.get('/verify', (req, res, next) => {
-
+router.get("/verify", (req, res, next) => {
   // If JWT token is valid the payload gets decoded by the
   // isAuthenticated middleware and made available on `req.payload`
-  console.log(`req.payload`, req)
+  //console.log(`req.payload`, req);
 
   // Send back the object with user data
   // previously set as the token payload
