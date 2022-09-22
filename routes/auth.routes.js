@@ -23,7 +23,7 @@ const transporter = nodemailer.createTransport({
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
 
-router.post("/signup", (req, res) => {
+router.post("/signup", async (req, res) => {
   const { username, password, email } = req.body;
 
   if (!username) {
@@ -54,70 +54,53 @@ router.post("/signup", (req, res) => {
   }
 
   // Search the database for a user with the username submitted in the form
-  User.findOne({ username }).then((found) => {
-    // If the user is found, send the message username is taken
-    if (found) {
-      return res.status(400).json({ errorMessage: "Username already taken." });
+  const found = await User.findOne({ username });
+  if (found) {
+    return res.status(400).json({ errorMessage: "Username already taken." });
+  }
+
+  try {
+    const salt = bcrypt.genSalt(saltRounds);
+    const hashedPassword = bcrypt.hash(password, salt);
+    const userCreated = await User.create({
+      username,
+      password: hashedPassword,
+      email,
+    });
+
+    const emailToken = jsonWebToken.sign(
+      {
+        user: userCreated._id,
+      },
+      process.env.EMAIL_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
+    const payload = { User: userCreated._id };
+
+    const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
+      algorithm: "HS256",
+      expiresIn: "7d",
+    });
+
+    res.status(201).json({
+      message: "User created",
+      status: "Mail sent at " + userCreated.email,
+      token: token,
+    });
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      return res.status(400).json({ errorMessage: error.message });
     }
-
-    // if user is not found, create a new user - start with hashing the password
-    return bcrypt
-      .genSalt(saltRounds)
-      .then((salt) => bcrypt.hash(password, salt))
-      .then((hashedPassword) => {
-        // Create a user and save it in the database
-        return User.create({
-          username,
-          password: hashedPassword,
-          email,
-        });
-      })
-      .then(async (User) => {
-        const emailToken = jsonWebToken.sign(
-          {
-            user: User._id,
-          },
-          process.env.EMAIL_SECRET,
-          {
-            expiresIn: "1d",
-          }
-        );
-
-        const url = `http://${process.env.ORIGIN}/confirmation/${emailToken}`;
-
-        await transporter.sendMail({
-          to: User.email,
-          subject: "Confirm Email",
-          html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
-        });
-
-        const payload = { User: User._id };
-
-        const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
-          algorithm: "HS256",
-          expiresIn: "7d",
-        });
-
-        res.status(201).json({
-          message: "User created",
-          status: "Mail sent at " + email,
-          token: token,
-        });
-      })
-      .catch((error) => {
-        if (error instanceof mongoose.Error.ValidationError) {
-          return res.status(400).json({ errorMessage: error.message });
-        }
-        if (error.code === 11000) {
-          return res.status(400).json({
-            errorMessage:
-              "Username need to be unique. The username you chose is already in use.",
-          });
-        }
-
-        return res.status(500).json({ errorMessage: "ici" + error.message });
+    if (error.code === 11000) {
+      return res.status(400).json({
+        errorMessage:
+          "Username need to be unique. The username you chose is already in use.",
       });
-  });
+    }
+    return res.status(500).json({ errorMessage: error.message });
+  }
 });
 
 router.get("/confirmation/:tokenId", async (req, res, next) => {
@@ -192,11 +175,7 @@ router.get("/verify", (req, res, next) => {
 
   // Send back the object with user data
   // previously set as the token payload
-  try {
-    res.status(200).json(req.payload);
-  } catch (error) {
-    next(error);
-  }
+  res.status(200).json(req.payload);
 });
 
 //verification of the email (sending)
