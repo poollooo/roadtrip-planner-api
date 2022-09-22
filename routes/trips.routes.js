@@ -30,10 +30,10 @@ router.post("/", isAuthenticated, async (req, res, next) => {
     const { newActivityList, startDate, endDate, name, cityLocationId } =
       req.body;
     const user = req.user;
-
+    const foundCity = await City.findOne({ cityLocationId });
     const tripCreated = await Trip.create({
       userId: user._id,
-      cityId: cityLocationId,
+      cityId: foundCity.id,
       startDate,
       endDate,
       name,
