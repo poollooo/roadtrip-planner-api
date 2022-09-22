@@ -38,10 +38,12 @@ module.exports.getLocationId = async (req, res, next) => {
         req.locationSearchedId = locationSearchedId;
         req.locationNameId = data.data[0].result_object.name;
         req.locationImage = data.data[0].result_object.photo.images.original.url;
+        req.description = data.data[0].result_object.geo_description;
         const newCity = City.create({
           cityLocationId: req.locationSearchedId,
           name: req.locationNameId.toLowerCase(),
           image: req.locationImage,
+          description: req.description
         });
         next()
       })
