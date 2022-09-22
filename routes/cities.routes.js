@@ -14,7 +14,7 @@ router.get('/:name', async (req, res) => {
     try {
         console.log(req.params.name);
         const cityByName = await City.findOne({ name: req.params.name })
-        res.json({ cityByName })
+        res.json(cityByName)
     } catch (error) {
         console.log(error)
     }
