@@ -78,7 +78,7 @@ router.post("/", isAuthenticated, async (req, res, next) => {
 router.get("/all", isAuthenticated, async (req, res, next) => {
   try {
     const trip = await Trip.find({ userId: req.user.id });
-    res.status(200).json(trip).populate('cityId userId')
+    res.status(200).json(trip)
   } catch (error) {
     res.status(404).json("Trip Not Found !");
     next(error);
