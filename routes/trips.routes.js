@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Trip = require("../models/Trip.model");
+const City = require("../models/City.model");
 const SelectedActivities = require("../models/SelectedActivities.model");
 const isAuthenticated = require("../middleware/isAuthenticated");
 const { isValid } = require("../middleware/isValid");
