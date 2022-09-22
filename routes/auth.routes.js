@@ -23,6 +23,8 @@ const transporter = nodemailer.createTransport({
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
 
+
+
 router.post("/signup", (req, res) => {
   const { username, password, email } = req.body;
 
@@ -73,36 +75,40 @@ router.post("/signup", (req, res) => {
         });
       })
       .then(async (User) => {
-        const emailToken = jsonWebToken.sign(
-          {
-            user: User._id,
-          },
-          process.env.EMAIL_SECRET,
-          {
-            expiresIn: "1d",
-          }
-        );
+        try {
+          const emailToken = jsonWebToken.sign(
+            {
+              user: User._id,
+            },
+            process.env.EMAIL_SECRET,
+            {
+              expiresIn: "1d",
+            }
+          );
 
-        const url = `http://${process.env.ORIGIN}/confirmation/${emailToken}`;
+          const url = `http://${process.env.ORIGIN}/confirmation/${emailToken}`;
 
-        await transporter.sendMail({
-          to: User.email,
-          subject: "Confirm Email",
-          html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
-        });
+          await transporter.sendMail({
+            to: User.email,
+            subject: "Confirm Email",
+            html: `Please click this email to confirm your email: <a href="${url}">${url}</a>`,
+          });
 
-        const payload = { User: User._id };
+          const payload = { User: User._id };
 
-        const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
-          algorithm: "HS256",
-          expiresIn: "7d",
-        });
+          const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
+            algorithm: "HS256",
+            expiresIn: "7d",
+          });
 
-        res.status(201).json({
-          message: "User created",
-          status: "Mail sent at " + email,
-          token: token,
-        });
+          res.status(201).json({
+            message: "User created",
+            status: "Mail sent at " + email,
+            token: token,
+          });
+        } catch (error) {
+          next(error);
+        }
       })
       .catch((error) => {
         if (error instanceof mongoose.Error.ValidationError) {
@@ -115,10 +121,21 @@ router.post("/signup", (req, res) => {
           });
         }
 
-        return res.status(500).json({ errorMessage: "ici" + error.message });
+        return res.status(500).json({ errorMessage: error.message });
       });
   });
 });
+
+
+
+
+
+
+
+
+
+
+
 
 router.get("/confirmation/:tokenId", async (req, res, next) => {
   try {
@@ -192,11 +209,7 @@ router.get("/verify", (req, res, next) => {
 
   // Send back the object with user data
   // previously set as the token payload
-  try {
-    res.status(200).json(req.payload);
-  } catch (error) {
-    next(error);
-  }
+  res.status(200).json(req.payload);
 });
 
 //verification of the email (sending)
