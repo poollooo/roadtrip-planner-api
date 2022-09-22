@@ -28,7 +28,9 @@ router.post("/signup", async (req, res, next) => {
     const { username, password, email } = req.body;
 
     if (!username) {
-      return res.status(400).json({ errorMessage: "Please provide a username." });
+      return res
+        .status(400)
+        .json({ errorMessage: "Please provide a username." });
     }
 
     if (password.length < 8) {
@@ -78,7 +80,7 @@ router.post("/signup", async (req, res, next) => {
           expiresIn: "1d",
         }
       );
-      const payload = { User: userCreated._id };
+      const payload = { user: userCreated._id };
 
       const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
         algorithm: "HS256",
@@ -172,7 +174,7 @@ router.post("/login", (req, res, next) => {
         // return res.status(500).render("login", { errorMessage: error.message });
       });
   } catch (error) {
-    next(error)
+    next(error);
   }
 });
 
