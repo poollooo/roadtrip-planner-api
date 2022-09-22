@@ -10,12 +10,13 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:name', async (req, res) => {
     try {
-        const cityById = await City.findById(req.params.id)
-        res.json({ cityById })
+        console.log(req.params.name);
+        const cityByName = await City.findOne({ name: req.params.name })
+        res.json({ cityByName })
     } catch (error) {
-        next(error);
+        console.log(error)
     }
 })
 
