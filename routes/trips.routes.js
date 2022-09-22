@@ -6,6 +6,7 @@ const isAuthenticated = require("../middleware/isAuthenticated");
 const { isValid } = require("../middleware/isValid");
 const Activities = require("../models/Activities.model");
 
+//get all trips
 router.get("/", async (req, res, next) => {
   try {
     const findAll = await Trip.find();
