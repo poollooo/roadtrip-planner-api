@@ -102,7 +102,7 @@ router.get("/:tripId", isAuthenticated, async (req, res, next) => {
       tripId: tripId,
     }).populate("activityId");
 
-    res.status(200).json(activitiesFound);
+    res.status(200).json(tripFound, activitiesFound);
   } catch (error) {
     next(error);
   }
