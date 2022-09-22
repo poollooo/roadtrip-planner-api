@@ -23,7 +23,7 @@ const transporter = nodemailer.createTransport({
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
 
-router.post("/signup", async (req, res) => {
+router.post("/signup", async (req, res, next) => {
   try {
     const { username, password, email } = req.body;
 
@@ -103,7 +103,7 @@ router.post("/signup", async (req, res) => {
       return res.status(500).json({ errorMessage: error.message });
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
