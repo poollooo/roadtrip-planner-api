@@ -24,82 +24,86 @@ const transporter = nodemailer.createTransport({
 const User = require("../models/User.model");
 
 router.post("/signup", async (req, res) => {
-  const { username, password, email } = req.body;
-
-  if (!username) {
-    return res.status(400).json({ errorMessage: "Please provide a username." });
-  }
-
-  if (password.length < 8) {
-    return res.status(400).json({
-      errorMessage: "Your password needs to be at least 8 characters long.",
-    });
-  }
-  const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gi;
-  if (!regexEmail.test(email)) {
-    return res.status(400).json({
-      errorMessage: "Please provide a valid email",
-    });
-  }
-
-  //   ! This use case is using a regular expression to control for special characters and min length
-
-  const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
-
-  if (!regex.test(password)) {
-    return res.status(400).json({
-      errorMessage:
-        "Password needs to have at least 8 chars and must contain at least one number, one lowercase and one uppercase letter.",
-    });
-  }
-
-  // Search the database for a user with the username submitted in the form
-  const found = await User.findOne({ username });
-  if (found) {
-    return res.status(400).json({ errorMessage: "Username already taken." });
-  }
-
   try {
-    const salt = bcrypt.genSalt(saltRounds);
-    const hashedPassword = bcrypt.hash(password, salt);
-    const userCreated = await User.create({
-      username,
-      password: hashedPassword,
-      email,
-    });
+    const { username, password, email } = req.body;
 
-    const emailToken = jsonWebToken.sign(
-      {
-        user: userCreated._id,
-      },
-      process.env.EMAIL_SECRET,
-      {
-        expiresIn: "1d",
-      }
-    );
-    const payload = { User: userCreated._id };
-
-    const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
-      algorithm: "HS256",
-      expiresIn: "7d",
-    });
-
-    res.status(201).json({
-      message: "User created",
-      status: "Mail sent at " + userCreated.email,
-      token: token,
-    });
-  } catch (error) {
-    if (error instanceof mongoose.Error.ValidationError) {
-      return res.status(400).json({ errorMessage: error.message });
+    if (!username) {
+      return res.status(400).json({ errorMessage: "Please provide a username." });
     }
-    if (error.code === 11000) {
+
+    if (password.length < 8) {
       return res.status(400).json({
-        errorMessage:
-          "Username need to be unique. The username you chose is already in use.",
+        errorMessage: "Your password needs to be at least 8 characters long.",
       });
     }
-    return res.status(500).json({ errorMessage: error.message });
+    const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gi;
+    if (!regexEmail.test(email)) {
+      return res.status(400).json({
+        errorMessage: "Please provide a valid email",
+      });
+    }
+
+    //   ! This use case is using a regular expression to control for special characters and min length
+
+    const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
+
+    if (!regex.test(password)) {
+      return res.status(400).json({
+        errorMessage:
+          "Password needs to have at least 8 chars and must contain at least one number, one lowercase and one uppercase letter.",
+      });
+    }
+
+    // Search the database for a user with the username submitted in the form
+    const found = await User.findOne({ username });
+    if (found) {
+      return res.status(400).json({ errorMessage: "Username already taken." });
+    }
+
+    try {
+      const salt = bcrypt.genSalt(saltRounds);
+      const hashedPassword = bcrypt.hash(password, salt);
+      const userCreated = await User.create({
+        username,
+        password: hashedPassword,
+        email,
+      });
+
+      const emailToken = jsonWebToken.sign(
+        {
+          user: userCreated._id,
+        },
+        process.env.EMAIL_SECRET,
+        {
+          expiresIn: "1d",
+        }
+      );
+      const payload = { User: userCreated._id };
+
+      const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
+        algorithm: "HS256",
+        expiresIn: "7d",
+      });
+
+      res.status(201).json({
+        message: "User created",
+        status: "Mail sent at " + userCreated.email,
+        token: token,
+      });
+    } catch (error) {
+      if (error instanceof mongoose.Error.ValidationError) {
+        return res.status(400).json({ errorMessage: error.message });
+      }
+      if (error.code === 11000) {
+        return res.status(400).json({
+          errorMessage:
+            "Username need to be unique. The username you chose is already in use.",
+        });
+      }
+      return res.status(500).json({ errorMessage: error.message });
+    }
+  } catch (error) {
+    console.log(error);
   }
 });
 
@@ -119,53 +123,57 @@ router.get("/confirmation/:tokenId", async (req, res, next) => {
 });
 
 router.post("/login", (req, res, next) => {
-  const { username, password } = req.body;
+  try {
+    const { username, password } = req.body;
 
-  if (!username) {
-    return res
-      .status(400)
-      .json({ errorMessage: "Please provide your username." });
-  }
+    if (!username) {
+      return res
+        .status(400)
+        .json({ errorMessage: "Please provide your username." });
+    }
 
-  if (!password) {
-    return res
-      .status(400)
-      .json({ errorMessage: "Please provide your password." });
-  }
+    if (!password) {
+      return res
+        .status(400)
+        .json({ errorMessage: "Please provide your password." });
+    }
 
-  // Search the database for a user with the username submitted in the form
-  User.findOne({ username })
-    .then((user) => {
-      // If the user isn't found, send the message that user provided wrong credentials
-      if (!user) {
-        return res.status(400).json({ errorMessage: "Wrong credentials." });
-      }
-
-      // If user is found based on the username, check if the in putted password matches the one saved in the database
-      bcrypt.compare(password, user.password).then((isSamePassword) => {
-        if (!isSamePassword) {
+    // Search the database for a user with the username submitted in the form
+    User.findOne({ username })
+      .then((user) => {
+        // If the user isn't found, send the message that user provided wrong credentials
+        if (!user) {
           return res.status(400).json({ errorMessage: "Wrong credentials." });
         }
 
-        const payload = { user: user._id };
+        // If user is found based on the username, check if the in putted password matches the one saved in the database
+        bcrypt.compare(password, user.password).then((isSamePassword) => {
+          if (!isSamePassword) {
+            return res.status(400).json({ errorMessage: "Wrong credentials." });
+          }
 
-        const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
-          algorithm: "HS256",
-          expiresIn: "7d",
+          const payload = { user: user._id };
+
+          const token = jsonWebToken.sign(payload, process.env.TOKEN_SECRET, {
+            algorithm: "HS256",
+            expiresIn: "7d",
+          });
+
+          // req.session.user = token;
+          // req.session.user = user._id; // ! better and safer but in this case we saving the entire user object
+          return res.json(token);
         });
+      })
 
-        // req.session.user = token;
-        // req.session.user = user._id; // ! better and safer but in this case we saving the entire user object
-        return res.json(token);
+      .catch((error) => {
+        // in this case we are sending the error handling to the error handling middleware that is defined in the error handling file
+        // you can just as easily run the res.status that is commented out below
+        next(error);
+        // return res.status(500).render("login", { errorMessage: error.message });
       });
-    })
-
-    .catch((error) => {
-      // in this case we are sending the error handling to the error handling middleware that is defined in the error handling file
-      // you can just as easily run the res.status that is commented out below
-      next(error);
-      // return res.status(500).render("login", { errorMessage: error.message });
-    });
+  } catch (error) {
+    next(error)
+  }
 });
 
 router.get("/verify", (req, res, next) => {
