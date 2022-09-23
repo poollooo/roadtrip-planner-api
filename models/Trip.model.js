@@ -5,14 +5,13 @@ const tripSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     name: Schema.Types.String,
-    cityId: { type: Schema.Types.String, ref: "City", required: true },
+    cityId: { type: Schema.Types.ObjectId, ref: "City", required: true },
     startDate: { type: Schema.Types.Date },
     endDate: { type: Schema.Types.Date },
   },
   { timestamps: true }
 );
 
-  
 const Trip = model("Trip", tripSchema);
 
 module.exports = Trip;
