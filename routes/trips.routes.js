@@ -78,8 +78,8 @@ router.post("/", isAuthenticated, async (req, res, next) => {
 // Get all Trips List of a user by username
 router.get("/all", isAuthenticated, async (req, res, next) => {
   try {
-    const trip = await Trip.find({ userId: req.user.id }).populate('cityId userId');
-    res.status(200).json({ trip })
+    const trip = await Trip.find({ userId: req.user.id }).populate("cityId");
+    res.status(200).json({ trip });
   } catch (error) {
     res.status(404).json("Trip Not Found !");
     next(error);
